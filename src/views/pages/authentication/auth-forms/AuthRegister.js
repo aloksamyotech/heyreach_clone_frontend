@@ -126,11 +126,16 @@ const FirebaseRegister = ({ ...others }) => {
 
       <Formik
         initialValues={{
+          firstname: '',
+          lastname: '',
+          company: '',
           email: '',
           password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
+          firstname: Yup.string().required('First name is required'),
+          lastname: Yup.string().required('Last name is required'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
@@ -140,6 +145,8 @@ const FirebaseRegister = ({ ...others }) => {
               setStatus({ success: true });
               setSubmitting(false);
             }
+
+            console.log("values====>", values);
           } catch (err) {
             console.error(err);
             if (scriptedRef.current) {
@@ -158,10 +165,14 @@ const FirebaseRegister = ({ ...others }) => {
                   fullWidth
                   label="First Name"
                   margin="normal"
-                  name="fname"
+                  name="firstname"
                   type="text"
+                  value={values.firstname}
+                  onChange={handleChange}
                   defaultValue=""
                   sx={{ ...theme.typography.customInput }}
+                  error={!!errors.firstname}
+                  helperText={errors.firstname}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -169,13 +180,34 @@ const FirebaseRegister = ({ ...others }) => {
                   fullWidth
                   label="Last Name"
                   margin="normal"
-                  name="lname"
+                  name="lastname"
                   type="text"
+                  value={values.lastname}
+                  onChange={handleChange}
                   defaultValue=""
                   sx={{ ...theme.typography.customInput }}
+                  error={!!errors.lastname}
+                  helperText={errors.lastname}
                 />
               </Grid>
             </Grid>
+            <FormControl fullWidth error={Boolean(touched.company && errors.company)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-email-register">Company</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-company-register"
+                type="text"
+                value={values.company}
+                name="company"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                inputProps={{}}
+              />
+              {touched.company && errors.company && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.company}
+                </FormHelperText>
+              )}
+            </FormControl>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
               <OutlinedInput
