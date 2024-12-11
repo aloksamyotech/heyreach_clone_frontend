@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // material-ui
@@ -35,6 +35,9 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import axios from 'axios';
+import { APIconfig, baseUrl } from 'utils/constant';
+import { toast } from 'react-toastify';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -48,6 +51,8 @@ const FirebaseRegister = ({ ...others }) => {
 
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
+
+  const navigate = useNavigate();
 
   const googleHandler = async () => {
     console.error('Register');
@@ -130,8 +135,7 @@ const FirebaseRegister = ({ ...others }) => {
           lastname: '',
           company: '',
           email: '',
-          password: '',
-          submit: null
+          password: ''
         }}
         validationSchema={Yup.object().shape({
           firstname: Yup.string().required('First name is required'),
@@ -141,12 +145,14 @@ const FirebaseRegister = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
+            const response = await axios.post(`${baseUrl}/user/register`, values, APIconfig);
 
-            console.log("values====>", values);
+            if (response?.data?.success === true) {
+              toast.success("Signup Successfull, Please login");
+              navigate('/login');
+            } else {
+              toast.error("Signup failed, Try again");
+            }
           } catch (err) {
             console.error(err);
             if (scriptedRef.current) {

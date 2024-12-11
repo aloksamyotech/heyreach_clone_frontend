@@ -12,20 +12,15 @@ import {
   IconPhoneCheck,
   IconUsers
 } from '@tabler/icons';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // constant
 const icons = {
-  IconHome,
-  IconCalendarEvent,
-  IconMail,
-  IconFileUpload,
-  IconFileInvoice,
-  IconPhoneCall,
-  IconAntennaBars5,
-  IconChecklist,
-  IconNotebook,
-  IconPhoneCheck,
-  IconUsers
+  LinkedInIcon,
+  DashboardIcon,
+  AccountCircleIcon
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -38,16 +33,24 @@ const dashboard = {
       id: 'default',
       title: 'Dashboard',
       type: 'item',
-      url: '/dashboard/default',
-      icon: icons.IconHome,
+      url: '/dashboard',
+      icon: icons.DashboardIcon,
       breadcrumbs: false
     },
     {
-      id: '01',
+      id: 'linkedIn',
+      title: 'LinkedIn Accounts',
+      type: 'item',
+      url: '/linked-accounts',
+      icon: icons.LinkedInIcon,
+      breadcrumbs: false
+    },
+    {
+      id: 'lead',
       title: 'Lead Management',
       type: 'item',
-      url: '/dashboard/lead',
-      icon: icons.IconAntennaBars5,
+      url: '/lead',
+      icon: icons.AccountCircleIcon,
       breadcrumbs: false
     }
   ]

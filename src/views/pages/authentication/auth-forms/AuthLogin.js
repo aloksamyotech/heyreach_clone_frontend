@@ -34,6 +34,10 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
+import axios from 'axios';
+import { APIconfig, baseUrl } from 'utils/constant';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -43,6 +47,8 @@ const FirebaseLogin = ({ ...others }) => {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
+
+  const navigate = useNavigate();
 
   const googleHandler = async () => {
     console.error('Login');
@@ -120,9 +126,8 @@ const FirebaseLogin = ({ ...others }) => {
 
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
-          submit: null
+          email: '',
+          password: '',
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -130,12 +135,17 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
+            const response = await axios.post(`${baseUrl}/user/login`, values, APIconfig);
+            if (response?.data?.success === true) {
+              toast.success('Login Successfull');
+              navigate('/dashboard');
+            }
+            else {
+              toast.error(response?.data?.message);
             }
           } catch (err) {
             console.error(err);
+            toast.error(err?.response?.data?.message);
             if (scriptedRef.current) {
               setStatus({ success: false });
               setErrors({ submit: err.message });
@@ -150,13 +160,15 @@ const FirebaseLogin = ({ ...others }) => {
               <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
-                type="email"
+                type="text"
                 value={values.email}
                 name="email"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label="Email Address / Username"
-                inputProps={{}}
+                inputProps={{
+                  maxLength:50
+                }}
               />
               {touched.email && errors.email && (
                 <FormHelperText error id="standard-weight-helper-text-email-login">
