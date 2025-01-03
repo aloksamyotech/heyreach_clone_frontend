@@ -26,18 +26,11 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-// import { useState,useEffect } from 'react';
-// import { apiget, apipost } from '../../service/api';
 import Palette from '../../ui-component/ThemePalette';
 
 const AddLead = (props) => {
   const { open, handleClose } = props;
-  // const [user, setUser] = useState([]);
 
-  // const userid = localStorage.getItem('user_id');
-  // const userdata = JSON.parse(localStorage.getItem('user'));
-
-  // -----------  validationSchema
   const validationSchema = yup.object({
     title: yup.string().required('Title is required'),
     firstName: yup.string().required('First Name is required'),
