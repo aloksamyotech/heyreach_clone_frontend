@@ -34,9 +34,7 @@ const ConnectAccount = (props) => {
 
   const onSubmit = async (data) => {
     try {
-      // Replace with your API endpoint
       const response = await postData('linkedin/connect-account', data);
-
       if (response.ok) {
         const result = await response.json();
         console.log('Success:', result);

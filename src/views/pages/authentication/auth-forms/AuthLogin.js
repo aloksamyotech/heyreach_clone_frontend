@@ -20,26 +20,16 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material';
-
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project imports
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
-
-// assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 import Google from 'assets/images/icons/social-google.svg';
-import axios from 'axios';
-import { APIconfig, baseUrl } from 'utils/constant';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
-
-// ============================|| FIREBASE - LOGIN ||============================ //
+import { post } from 'api';
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
@@ -127,7 +117,7 @@ const FirebaseLogin = ({ ...others }) => {
       <Formik
         initialValues={{
           email: '',
-          password: '',
+          password: ''
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -135,12 +125,11 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            const response = await axios.post(`${baseUrl}/user/login`, values, APIconfig);
+            const response = await post(`user/login`, values);
             if (response?.data?.success === true) {
               toast.success('Login Successfull');
               navigate('/dashboard');
-            }
-            else {
+            } else {
               toast.error(response?.data?.message);
             }
           } catch (err) {
@@ -167,7 +156,7 @@ const FirebaseLogin = ({ ...others }) => {
                 onChange={handleChange}
                 label="Email Address / Username"
                 inputProps={{
-                  maxLength:50
+                  maxLength: 50
                 }}
               />
               {touched.email && errors.email && (

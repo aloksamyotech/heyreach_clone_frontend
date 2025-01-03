@@ -22,24 +22,16 @@ import {
   useMediaQuery
 } from '@mui/material';
 
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project imports
 import useScriptRef from 'hooks/useScriptRef';
 import Google from 'assets/images/icons/social-google.svg';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
-
-// assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import axios from 'axios';
-import { APIconfig, baseUrl } from 'utils/constant';
 import { toast } from 'react-toastify';
-
-// ===========================|| FIREBASE - REGISTER ||=========================== //
+import { post } from 'api';
 
 const FirebaseRegister = ({ ...others }) => {
   const theme = useTheme();
@@ -145,13 +137,13 @@ const FirebaseRegister = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            const response = await axios.post(`${baseUrl}/user/register`, values, APIconfig);
+            const response = await post(`user/register`, values);
 
             if (response?.data?.success === true) {
-              toast.success("Signup Successfull, Please login");
+              toast.success('Signup Successfull, Please login');
               navigate('/login');
             } else {
-              toast.error("Signup failed, Try again");
+              toast.error('Signup failed, Try again');
             }
           } catch (err) {
             console.error(err);
