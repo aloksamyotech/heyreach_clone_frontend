@@ -126,7 +126,8 @@ const FirebaseLogin = ({ ...others }) => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             const response = await post(`user/login`, values);
-            if (response?.data?.success === true) {
+            console.log(response);
+            if (response?.success === true) {
               toast.success('Login Successfull');
               navigate('/dashboard');
             } else {
