@@ -139,7 +139,7 @@ const FirebaseRegister = ({ ...others }) => {
           try {
             const response = await post(`user/register`, values);
 
-            if (response?.data?.success === true) {
+            if (response?.success === true) {
               toast.success('Signup Successfull, Please login');
               navigate('/login');
             } else {
