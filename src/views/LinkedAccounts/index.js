@@ -31,6 +31,7 @@ const LinkedAccounts = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors }
   } = useForm();
   const [isLoading, setLoader] = useState(false);
@@ -41,6 +42,7 @@ const LinkedAccounts = () => {
   };
   const handleClose = () => {
     setModal(false);
+    reset();
   };
   const [linkedinData, setAccount] = useState([]);
   const toggleDrawer = (openDrawer) => {
@@ -135,6 +137,7 @@ const LinkedAccounts = () => {
                     type="submit"
                     variant="contained"
                     fullWidth
+                    disabled={watch('url') ? false : true}
                     sx={{
                       height: '50px',
                       borderRadius: '8px',
