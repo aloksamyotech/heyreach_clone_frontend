@@ -24,7 +24,7 @@ export const fetchData = async (endpoint) => {
 
 export const postData = async (endpoint, data) => {
   try {
-    const response = await axiosInstance.post(endpoint, data);
+    const response = await axiosInstance.post(endpoint, data,);
     return response.data;
   } catch (error) {
     console.error('Error posting data', error);

@@ -19,7 +19,7 @@ const MenuList = () => {
         );
     }
   });
-
+  console.log('navItems : ', navItems);
   return <>{navItems}</>;
 };
 

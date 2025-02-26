@@ -7,7 +7,7 @@ import Loadable from 'ui-component/Loadable';
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 const LeadManagement = Loadable(lazy(() => import('views/Lead')));
-const LinkedAccounts = Loadable(lazy(()=>import('views/LinkedAccounts')))
+const LinkedAccounts = Loadable(lazy(() => import('views/LinkedAccounts')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -20,7 +20,7 @@ const MainRoutes = {
       element: <DashboardDefault />
     },
     {
-      path: 'dashboard',
+      path: '/dashboard',
       element: <DashboardDefault />
     },
     {

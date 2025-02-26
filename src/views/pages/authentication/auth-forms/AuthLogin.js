@@ -30,6 +30,7 @@ import Google from 'assets/images/icons/social-google.svg';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import { post } from 'api';
+import Cookies from 'js-cookie';
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
@@ -56,7 +57,7 @@ const FirebaseLogin = ({ ...others }) => {
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <AnimateButton>
             <Button
               disableElevation
@@ -111,7 +112,7 @@ const FirebaseLogin = ({ ...others }) => {
           <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle1">Sign in with Email address</Typography>
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <Formik
@@ -126,8 +127,8 @@ const FirebaseLogin = ({ ...others }) => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             const response = await post(`user/login`, values);
-            console.log(response);
             if (response?.success === true) {
+              Cookies.set('token', response?.data?.accessToken);
               toast.success('Login Successfull');
               navigate('/dashboard');
             } else {

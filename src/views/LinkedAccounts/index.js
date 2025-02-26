@@ -30,7 +30,7 @@ const LinkedAccounts = () => {
       field: 'action',
       headerName: 'Action',
       flex: 1,
-      renderCell: (params) => {
+      renderCell: () => {
         return <Button variant="contained">Update Detail</Button>;
       }
     }

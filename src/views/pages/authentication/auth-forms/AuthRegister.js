@@ -71,7 +71,7 @@ const FirebaseRegister = ({ ...others }) => {
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <AnimateButton>
             <Button
               variant="outlined"
@@ -118,7 +118,7 @@ const FirebaseRegister = ({ ...others }) => {
           <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle1">Sign up with Email address</Typography>
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <Formik
