@@ -70,6 +70,21 @@ const Lead = () => {
       field: 'location',
       headerName: 'Location',
       flex: 1
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      flex: 1,
+      renderCell: (params) => (
+        <Stack direction="row" spacing={1}>
+          <Button variant="contained" color="primary" size="small" onClick={() => handleViewProfile(params.row._id)}>
+            View Profile
+          </Button>
+          <Button variant="contained" color="success" size="small" onClick={() => handleSendConnectionRequest(params.row._id)}>
+            Connect
+          </Button>
+        </Stack>
+      )
     }
   ];
 
@@ -94,6 +109,36 @@ const Lead = () => {
       toast.error('Something Went Wrong');
     } finally {
       setLoader(false);
+    }
+  };
+
+  // API call to view profile
+  const handleViewProfile = async (leadId) => {
+    try {
+      const response = await postData('linkedin/viewProfile', { leadId });
+      if (response.status === 200) {
+        toast.success('Profile viewed!');
+      } else {
+        toast.error('Failed to view profile.');
+      }
+    } catch (error) {
+      console.error('Error viewing profile:', error);
+      toast.error('Something went wrong.');
+    }
+  };
+
+  // API call to send connection request
+  const handleSendConnectionRequest = async (leadId) => {
+    try {
+      const response = await postData('linkedin/sendConnectionRequest', { leadId });
+      if (response.status === 200) {
+        toast.success('Connection request sent!');
+      } else {
+        toast.error('Failed to send connection request.');
+      }
+    } catch (error) {
+      console.error('Error sending request:', error);
+      toast.error('Something went wrong.');
     }
   };
 
