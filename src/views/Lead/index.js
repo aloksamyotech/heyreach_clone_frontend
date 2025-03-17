@@ -1,234 +1,211 @@
-import { useState } from 'react';
 import {
   Stack,
   Button,
   Container,
   Typography,
   Box,
-  Card,
   TextField,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   Grid,
-  FormLabel
+  InputAdornment,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  TableHead,
+  TableCell,
+  Table,
+  TableBody,
+  Chip,
+  TableRow
 } from '@mui/material';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import TableStyle from '../../ui-component/TableStyle';
-// import AddLead from './AddLead.js';
-import { useEffect } from 'react';
-import { fetchData, postData } from 'api';
-import { toast } from 'react-toastify';
-import CircularProgress from '@mui/material/CircularProgress';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { useForm } from 'react-hook-form';
-
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import { Link } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 const Lead = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors }
-  } = useForm();
-  const [isLoading, setLoader] = useState(false);
-  const [leadData, setLeadData] = useState([]);
-  const [modal, setModal] = useState(false);
-  const handleOpen = () => {
-    setModal(true);
-  };
-  const handleClose = () => {
-    setModal(false);
-    reset();
-  };
-
-  const columns = [
-    {
-      field: 'name',
-      headerName: 'Name',
-      flex: 1,
-      cellClassName: 'name-column--cell--capitalize'
-    },
-    {
-      field: 'profile',
-      headerName: 'Profile',
-      flex: 1,
-      cellClassName: 'name-column--cell--capitalize',
-      renderCell: (params) => {
-        return <a href={params?.row?.profile}> {params?.row?.profile} </a>;
-      }
-    },
-    {
-      field: 'skill',
-      headerName: 'Skills',
-      flex: 1
-    },
-    {
-      field: 'location',
-      headerName: 'Location',
-      flex: 1
-    },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      flex: 1,
-      renderCell: (params) => (
-        <Stack direction="row" spacing={1}>
-          <Button variant="contained" color="primary" size="small" onClick={() => handleViewProfile(params.row._id)}>
-            View Profile
-          </Button>
-          <Button variant="contained" color="success" size="small" onClick={() => handleSendConnectionRequest(params.row._id)}>
-            Connect
-          </Button>
-        </Stack>
-      )
-    }
-  ];
+  // const [isLoading, setLoader] = useState(false);
 
   const getLead = async () => {
-    const response = await fetchData('linkedin/getLeadData');
+    const response = await fetchData('linkedin/getListData');
     setLeadData(response?.data);
   };
 
-  const onSubmit = async (data) => {
-    try {
-      setLoader(true);
-      const response = await postData('linkedin/filterData', data);
-      console.log('response : ', response);
-      reset();
-      if (response.status === 201) {
-        toast.success('Lead Generated');
-      } else {
-        console.error('Failed to connect account');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Something Went Wrong');
-    } finally {
-      setLoader(false);
-    }
-  };
+  // const onSubmit = async (data) => {
+  //   try {
+  //     setLoader(true);
+  //     const response = await postData('linkedin/filterData', data);
+  //     reset();
+  //     if (response.status === 201) {
+  //       toast.success('Lead Generated');
+  //     } else {
+  //       console.error('Failed to connect account');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     toast.error('Something Went Wrong');
+  //   } finally {
+  //     setLoader(false);
+  //   }
+  // };
 
-  // API call to view profile
-  const handleViewProfile = async (leadId) => {
-    try {
-      const response = await postData('linkedin/viewProfile', { leadId });
-      if (response.status === 200) {
-        toast.success('Profile viewed!');
-      } else {
-        toast.error('Failed to view profile.');
-      }
-    } catch (error) {
-      console.error('Error viewing profile:', error);
-      toast.error('Something went wrong.');
-    }
-  };
+  // useEffect(() => {
+  //   getLead();
+  //   const interval = setInterval(() => {
+  //     getLead();
+  //   }, 30000);
 
-  // API call to send connection request
-  const handleSendConnectionRequest = async (leadId) => {
-    try {
-      const response = await postData('linkedin/sendConnectionRequest', { leadId });
-      if (response.status === 200) {
-        toast.success('Connection request sent!');
-      } else {
-        toast.error('Failed to send connection request.');
-      }
-    } catch (error) {
-      console.error('Error sending request:', error);
-      toast.error('Something went wrong.');
-    }
-  };
-
-  useEffect(() => {
-    getLead();
-    const interval = setInterval(() => {
-      getLead();
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <>
-      {isLoading && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            zIndex: 9999
-          }}
-        >
-          <CircularProgress />
-          <Typography>Fetching Leads Data It Require 5-10 min</Typography>
-        </Box>
-      )}
-      <Dialog open={modal} onClose={handleClose} fullWidth aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        {/* <DialogTitle id="alert-dialog-title">{'Enter Filter URL from LinkedIn'}</DialogTitle> */}
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <FormLabel>Enter Filter URL</FormLabel>
-                  <TextField
-                    {...register('url')}
-                    type="text"
-                    variant="outlined"
-                    fullWidth
-                    sx={{ marginTop: '8px' }}
-                    error={!!errors.url}
-                    helperText={errors.url?.message}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    fullWidth
-                    disabled={watch('url') ? false : true}
-                    sx={{
-                      height: '50px',
-                      borderRadius: '8px',
-                      backgroundColor: '#0A66C2',
-                      '&:hover': {
-                        backgroundColor: '#004182'
-                      }
-                    }}
-                    startIcon={<LinkedInIcon />}
-                  >
-                    Apply Filter
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
-      {/* <AddLead open={openAdd} handleClose={handleCloseAdd} /> */}
       <Container>
         <Stack direction="row" alignItems="center" mb={5} justifyContent={'space-between'}>
-          <Typography variant="h4">Lead-Management</Typography>
-          <Stack direction="row" alignItems="center" justifyContent={'flex-end'} spacing={2}>
-            <Button variant="contained" startIcon={<LinkedInIcon />} onClick={handleOpen}>
-              Generate Lead
-            </Button>
-          </Stack>
+          <Typography variant="h2">Lead</Typography>
         </Stack>
-        <TableStyle>
+        <Box width="100%" sx={{ padding: '10px', borderRadius: '10px' }}>
+          <Grid container>
+            <Grid xs={10} className="d-flex justify-content-around p-2 align-item-center">
+              <TextField
+                variant="outlined"
+                placeholder="Search lists"
+                sx={{
+                  margin: '5px',
+                  borderRadius: '25px' // Rounded corners
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon /> {/* Light gray icon */}
+                    </InputAdornment>
+                  )
+                }}
+              />
+              <FormControl sx={{ margin: '5px', minWidth: 200 }}>
+                <InputLabel id="demo-simple-select-label">Search List</InputLabel>
+                <Select
+                  sx={{
+                    backgroundColor: '#f7f9fc',
+                    borderRadius: '25px',
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '25px',
+                      '& fieldset': { borderColor: '#e0e3eb' }, // Border color
+                      '&:hover fieldset': { borderColor: '#cfd4db' }, // Hover effect
+                      '&.Mui-focused fieldset': { borderColor: '#cfd4db' } // Focus border color
+                    }
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon sx={{ color: '#cfd4db' }} />
+                      </InputAdornment>
+                    )
+                  }}
+                >
+                  <MenuItem>List Type:All</MenuItem>
+                  <MenuItem>Lead List</MenuItem>
+                  <MenuItem>Companies List</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl sx={{ margin: '5px', minWidth: 200 }}>
+                <InputLabel id="demo-simple-select-label">Search Campaigns</InputLabel>
+                <Select
+                  sx={{
+                    backgroundColor: '#f7f9fc',
+                    borderRadius: '25px',
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '25px',
+                      '& fieldset': { borderColor: '#e0e3eb' }, // Border color
+                      '&:hover fieldset': { borderColor: '#cfd4db' }, // Hover effect
+                      '&.Mui-focused fieldset': { borderColor: '#cfd4db' } // Focus border color
+                    }
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon sx={{ color: '#cfd4db' }} />
+                      </InputAdornment>
+                    )
+                  }}
+                >
+                  <MenuItem>All Campaigns</MenuItem>
+                  <MenuItem>CEO Connection</MenuItem>
+                  <MenuItem>CEO Connection</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid xs={2} sx={{ paddingTop: '10px' }}>
+              <Stack direction="row" alignItems="center" justifyContent={'flex-center'} spacing={2}>
+                <Button variant="contained" startIcon={<AddIcon />}>
+                  <Link to="/lead/add" style={{ textDecoration: 'none', color: 'white' }}>
+                    Add Lead
+                  </Link>
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid xs={12} sx={{ padding: '20px 0' }}>
+              <Table border={0} sx={{ background: 'white', borderRadius: '10px' }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <Typography fontWeight={'bold'}>List Name</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography fontWeight={'bold'}>Status</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography fontWeight={'bold'}>Leads</Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>CEO of USA</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={'1 in campaign'}
+                        sx={{ borderRadius: '10px', backgroundColor: '#def7ec', color: '#31c48d', fontWeight: 'bold' }}
+                      />
+                    </TableCell>
+                    <TableCell>2</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>CEO of USA</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={'1 in campaign'}
+                        sx={{ borderRadius: '10px', backgroundColor: '#def7ec', color: '#31c48d', fontWeight: 'bold' }}
+                      />
+                    </TableCell>
+                    <TableCell>2</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>CEO of USA</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={'1 in campaign'}
+                        sx={{ borderRadius: '10px', backgroundColor: '#def7ec', color: '#31c48d', fontWeight: 'bold' }}
+                      />
+                    </TableCell>
+                    <TableCell>2</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>CEO of USA</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={'1 in campaign'}
+                        sx={{ borderRadius: '10px', backgroundColor: '#def7ec', color: '#31c48d', fontWeight: 'bold' }}
+                      />
+                    </TableCell>
+                    <TableCell>2</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Grid>
+          </Grid>
+        </Box>
+        {/* <TableStyle>
           <Box width="100%">
             <Card style={{ height: '600px', paddingTop: '15px' }}>
               <DataGrid
@@ -241,7 +218,7 @@ const Lead = () => {
               />
             </Card>
           </Box>
-        </TableStyle>
+        </TableStyle> */}
       </Container>
     </>
   );

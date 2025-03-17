@@ -1,0 +1,25 @@
+.lead-button{
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: white;
+    border: 2px solid #eeeeee;
+    margin: 5px 0;
+    color: black;
+    font-weight: 600;
+    font-size:0.875rem !important;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.lead-button:hover{
+    background: #eeeeee;
+}
+.lead-img{
+    width: 3rem !important;
+    height: 3rem !important;
+    min-width: 3rem !important;
+    min-height: 3rem !important;
+    /* font-size: 3rem !important; */
+    line-height: 3rem !important;
+}
