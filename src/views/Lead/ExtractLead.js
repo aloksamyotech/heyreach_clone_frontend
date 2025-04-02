@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Stack, Container, Grid, Tabs, Tab, TextField, InputAdornment, Autocomplete, Button } from '@mui/material';
+import { Stack, Container, Grid, Tabs, Tab, TextField, InputAdornment, Autocomplete, Button, IconButton } from '@mui/material';
 import './lead.css';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
 import searchbar from '../../assets/images/searchImage.svg';
-import { ArrowBackIos } from '@mui/icons-material';
+import { ArrowBackIos, CorporateFare, DomainAdd, Factory, LocalActivityOutlined, LocationOn, Search } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { Person, Link, List } from '@mui/icons-material';
@@ -13,10 +13,14 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import DynamicLoader from 'ui-component/Loader';
+import { GetAllCities,GetCountries,GetState } from 'react-country-state-city';
 
 const ExtractLead = () => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
+  const [cities, setCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -29,16 +33,17 @@ const ExtractLead = () => {
   const filterAccount = async (data) => {
     try {
       setLoading(true);
-      console.log('data : ', data);
       const response = await post('linkedin/filterData', data);
       if (response?.status === 201) {
         toast.success('Lead Generated');
       } else {
         toast.error('Failed');
       }
-      setLoading(false);
     } catch (error) {
       console.log('Error while fetching', error);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -63,6 +68,38 @@ const ExtractLead = () => {
   useEffect(() => {
     getLinkedInAccount();
   }, []);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      const countries = await GetCountries();
+      
+      let allCities = [];
+
+      for (const country of countries) {
+        
+        const states = await GetState(country.iso2);
+        
+        for (const state of states) {
+          const stateCities = await GetAllCities(country.iso2, state.isoCode);
+          stateCities.forEach(city => {
+            allCities.push({
+              name: city.name,
+              state: state.name,
+              country: country.name,
+            });
+          });
+        }
+      }
+
+      setCities(allCities);
+    };
+
+    fetchCities();
+  }, []);
+
+  const handleCityChange = (_, value) => {
+    setSelectedCity(value);
+  };
   return (
     <Container>
       {isLoading && (
@@ -84,12 +121,9 @@ const ExtractLead = () => {
         </Box>
       )}
       <Stack direction="row" alignItems="center" mb={2} justifyContent={'flex-start'}>
-        <ArrowBackIos
-          sx={{ color: 'grey', fontWeight: '400', fontSize: '17px' }}
-          onClick={() => {
-            navigate('/lead');
-          }}
-        />{' '}
+        <IconButton onClick={() => { navigate('/lead')}}>
+            <ArrowBackIos sx={{ color: 'grey', fontWeight: '400', fontSize: '17px',cursor:'pointer' }} />
+        </IconButton>
         <Typography variant="h2" sx={{ paddingLeft: '25px' }}>
           Leads
         </Typography>
@@ -125,7 +159,7 @@ const ExtractLead = () => {
               <Tab label="Search By Keyword" value={2} />{' '}
             </Tabs>
             <Grid container>
-              {tabvalue === 1 || tabvalue === 2 ? (
+              {tabvalue === 1 ? (
                 <Grid item xs={12} sm={12} md={12} sx={{ padding: '20px 20px', display: 'flex', flexDirection: 'column' }}>
                   <form onSubmit={handleSubmit(filterAccount)}>
                     <TextField
@@ -201,7 +235,7 @@ const ExtractLead = () => {
                         />
                       )}
                     />
-                    <Typography variant="h3" color={'black'} sx={{ marginBottom: '20px' }}>
+                    <Typography variant="h4" color={'grey'} sx={{ marginBottom: '20px' }}>
                       Search Query
                     </Typography>
                     <TextField
@@ -238,7 +272,218 @@ const ExtractLead = () => {
                   </form>
                 </Grid>
               ) : (
-                <>Hello Word 2</>
+                <Grid item xs={12} sm={12} md={12} sx={{ padding: '20px 20px', display: 'flex', flexDirection: 'column' }}>
+                  <form onSubmit={handleSubmit(filterAccount)}>
+                  <TextField
+                      {...register('title', { required: 'Title is required' })}
+                      fullWidth
+                      sx={{
+                        marginBottom: '20px',
+                        borderRadius: '8px',
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: 'white',
+                          borderRadius: '8px',
+                          '& fieldset': { borderColor: '#CBD5E0' }, // Border color
+                          '&:hover fieldset': { borderColor: '#2B6CB0' } // Hover effect
+                        },
+                        '& .css-rwr04n-MuiInputBase-input-MuiOutlinedInput-input': {
+                          backgroundColor: 'white'
+                        }
+                      }}
+                      helperText={errors?.title?.message}
+                      variant="outlined"
+                      label="Enter Your List Name"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <List />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <Controller
+                      name="userId"
+                      control={control}
+                      rules={{ required: 'Send Account is required' }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          options={linkedAccounts}
+                          getOptionLabel={(option) => option.label}
+                          isOptionEqualToValue={(option, value) => option.value === value}
+                          onChange={(_, newValue) => field.onChange(newValue ? newValue.value : '')}
+                          helperText={errors?.userId?.message}
+                          sx={{ marginBottom: '20px' }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              fullWidth
+                              variant="outlined"
+                              label="Select Name"
+                              InputProps={{
+                                ...params.InputProps,
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <Person sx={{ color: '#2B6CB0' }} />
+                                  </InputAdornment>
+                                )
+                              }}
+                              sx={{
+                                marginBottom: '16px',
+                                backgroundColor: 'white',
+                                borderRadius: '8px',
+                                '& .MuiOutlinedInput-root': {
+                                  backgroundColor: 'white',
+                                  borderRadius: '8px',
+                                  '& fieldset': { borderColor: '#CBD5E0' },
+                                  '&:hover fieldset': { borderColor: '#2B6CB0' }
+                                },
+                                '& .css-1uj75u1-MuiInputBase-input-MuiOutlinedInput-input': {
+                                  backgroundColor: 'white'
+                                }
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                    <Typography variant="h4" sx={{ marginBottom: '20px',color:'grey' }}>
+                      Search Query
+                    </Typography>
+                    <TextField
+                      {...register('keyword', { required: 'Keyword is required' })}
+                      fullWidth
+                      sx={{
+                        marginBottom: '20px',
+                        borderRadius: '8px',
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: 'white',
+                          borderRadius: '8px',
+                          '& fieldset': { borderColor: '#CBD5E0' }, // Border color
+                          '&:hover fieldset': { borderColor: '#2B6CB0' } // Hover effect
+                        },
+                        '& .css-rwr04n-MuiInputBase-input-MuiOutlinedInput-input': {
+                          backgroundColor: 'white'
+                        }
+                      }}
+                      helperText={errors?.title?.message}
+                      variant="outlined"
+                      label="Enter Keyword for search"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Search />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <Grid container>
+                      <Grid item xs={12} sm={6} px={1}>
+                      <Autocomplete
+                        options={cities}
+                        getOptionLabel={(option) => `${option.name}, ${option.state}, ${option.country}`}
+                        onChange={handleCityChange}
+                        renderInput={(params) => <TextField {...params} label="Search Location" sx={{background:'white'}} variant="outlined" InputLabelProps={<LocationOn/>} />}
+                      />
+
+                      {selectedCity && (
+                        <p><strong>Selected:</strong> {selectedCity.name}, {selectedCity.state}, {selectedCity.country}</p>
+                      )}
+                      </Grid>
+                      <Grid item xs={12} sm={6} px={1}>
+                          <TextField
+                            {...register('company')}
+                            fullWidth
+                            helperText={errors?.url?.message}
+                            sx={{
+                              marginBottom: '20px',
+                              borderRadius: '8px',
+                              '& .MuiOutlinedInput-root': {
+                                backgroundColor: 'white',
+                                borderRadius: '8px',
+                                '& fieldset': { borderColor: '#CBD5E0' }, // Border color
+                                '&:hover fieldset': { borderColor: '#2B6CB0' } // Hover effect
+                              },
+                              '& .css-rwr04n-MuiInputBase-input-MuiOutlinedInput-input': {
+                                backgroundColor: 'white'
+                              }
+                            }}
+                            variant="outlined"
+                            label="Company Name"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <DomainAdd />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                      </Grid>
+                      <Grid item xs={12} sm={6} px={1}>
+                          <TextField
+                            {...register('industry')}
+                            fullWidth
+                            helperText={errors?.url?.message}
+                            sx={{
+                              marginBottom: '20px',
+                              borderRadius: '8px',
+                              '& .MuiOutlinedInput-root': {
+                                backgroundColor: 'white',
+                                borderRadius: '8px',
+                                '& fieldset': { borderColor: '#CBD5E0' }, // Border color
+                                '&:hover fieldset': { borderColor: '#2B6CB0' } // Hover effect
+                              },
+                              '& .css-rwr04n-MuiInputBase-input-MuiOutlinedInput-input': {
+                                backgroundColor: 'white'
+                              }
+                            }}
+                            variant="outlined"
+                            label="Industry"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <Factory />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                      </Grid>
+                      <Grid item xs={12} sm={6} px={1}>
+                          <TextField
+                            {...register('past_company')}
+                            fullWidth
+                            helperText={errors?.url?.message}
+                            sx={{
+                              marginBottom: '20px',
+                              borderRadius: '8px',
+                              '& .MuiOutlinedInput-root': {
+                                backgroundColor: 'white',
+                                borderRadius: '8px',
+                                '& fieldset': { borderColor: '#CBD5E0' }, // Border color
+                                '&:hover fieldset': { borderColor: '#2B6CB0' } // Hover effect
+                              },
+                              '& .css-rwr04n-MuiInputBase-input-MuiOutlinedInput-input': {
+                                backgroundColor: 'white'
+                              }
+                            }}
+                            variant="outlined"
+                            label="Past Comapany"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <CorporateFare/>
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                      </Grid>
+                    </Grid>
+
+                    <Button variant="contained" type="submit">
+                      Search
+                    </Button>
+                  </form>
+                </Grid>
               )}
             </Grid>
           </Box>

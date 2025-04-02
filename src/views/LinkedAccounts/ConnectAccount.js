@@ -17,6 +17,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { useForm } from 'react-hook-form';
 import { postData } from 'api';
+import { toast } from 'react-toastify';
 
 const ConnectAccount = (props) => {
   const { open, toggleDrawer } = props;
@@ -35,11 +36,12 @@ const ConnectAccount = (props) => {
   const onSubmit = async (data) => {
     try {
       const response = await postData('linkedin/connect-account', data);
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Success:', result);
+      if (response?.data?.success) {
+        toast.success(response?.data?.message);
+        toggleDrawer(false);
       } else {
-        console.error('Failed to connect account');
+        toast.error(response?.data?.message)
+        toggleDrawer(true);
       }
     } catch (error) {
       console.error('Error:', error);

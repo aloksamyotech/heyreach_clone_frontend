@@ -12,6 +12,7 @@ const MyNetwork = Loadable(lazy(() => import('views/MyNetwork')));
 const AddLead = Loadable(lazy(() => import('views/Lead/AddLead')));
 const ExtractLead = Loadable(lazy(() => import('views/Lead/ExtractLead')));
 const Campaign = Loadable(lazy(() => import('views/Caimpaign/Campaign')));
+const ViewLeadList = Loadable(lazy(() => import('views/Lead/ViewList')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -36,11 +37,11 @@ const MainRoutes = {
     },
     {
       path: '/lead/add',
-      element: <AddLead />
+      element: <ExtractLead />
     },
     {
-      path: '/lead/add/extractLead',
-      element: <ExtractLead />
+      path: '/lead/list/:id',
+      element: <ViewLeadList />
     },
     {
       path: '/my-network',

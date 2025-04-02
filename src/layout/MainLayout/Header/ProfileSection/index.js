@@ -55,7 +55,8 @@ const ProfileSection = () => {
   const anchorRef = useRef(null);
   const handleLogout = async () => {
     Cookies.remove('token');
-    navigate('/login');
+    // navigate('/login');
+    window.location.href="http://localhost:3000/login"
   };
 
   const handleClose = (event) => {

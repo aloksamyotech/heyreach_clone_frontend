@@ -130,7 +130,7 @@ const FirebaseLogin = ({ ...others }) => {
             if (response?.success === true) {
               Cookies.set('token', response?.data?.accessToken);
               toast.success('Login Successfull');
-              navigate('/dashboard');
+              window.location.href="http://localhost:3000/";
             } else {
               toast.error(response?.data?.message);
             }

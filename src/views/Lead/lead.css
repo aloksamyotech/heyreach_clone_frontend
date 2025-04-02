@@ -23,3 +23,72 @@
     /* font-size: 3rem !important; */
     line-height: 3rem !important;
 }
+.table-container{
+    border: none !important;
+    border-radius: 0% !important;
+}
+.table-head{
+    border:2px solid #e5e7eb;
+    background:rgba(248, 250, 252, 1);
+}
+.table-body{
+    border: 2px solid #e5e7eb;
+}
+#lead .table-head .table-cell{
+    color:'#6b7280' !important;
+}
+.table-row{
+   border-bottom: 2px solid #e5e7eb !important;
+}
+.table-row:hover{
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+.paginate-btn{
+    flex: 1;
+    border: none !important;
+    background: none;
+    color: darkgrey !important;
+    padding: 8px 15px !important;
+    min-width: 90px !important;
+    text-align: center;
+}
+.prev-btn{
+    border-right: 2px solid #e5e7eb !important;
+}
+.next-btn{
+    border-left: 2px solid #e5e7eb !important;
+}
+.css-1t7t7fh-MuiButtonBase-root-MuiButton-root.Mui-disabled{
+   border: none!important;
+}
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
+   border: none !important;
+}
+#lead .table-cell{
+    width: 250px !important; 
+    white-space: nowrap; 
+    overflow: 'hidden';
+    text-overflow: 'ellipsis';
+    color: grey;
+    text-align: left;
+    border-right: 2px solid #e5e7eb;
+}
+.table-cell-div{
+    max-width: 100%;
+    overflow: 'hidden'; 
+    text-overflow: 'ellipsis';
+    white-space: 'nowrap';
+}
+.custom-btn{
+    background: none !important;
+    border: 2px solid #e5e7eb !important;
+    /* padding: 10px 10px !important; */
+    color: grey !important;
+    width: 170px;
+    height: 45px;
+    border-radius: 8px;
+    margin: 0 10px !important;
+    margin-top: -5px !important;
+    font-weight: 400;
+}

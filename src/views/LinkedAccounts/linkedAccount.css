@@ -1,0 +1,57 @@
+.table-head{
+    border:2px solid #e5e7eb;
+    background:rgba(248, 250, 252, 1) !important;
+}
+.table-cell{
+    text-align: left !important;
+    color: grey !important;
+    font-size: 14px !important;
+    width: 250px !important; 
+    white-space: nowrap !important; 
+    overflow: 'hidden' !important;
+    text-overflow: 'ellipsis' !important;
+}
+.paginate-btn{
+    flex: 1;
+    border: none !important;
+    background: none;
+    color: darkgrey !important;
+    padding: 8px 15px !important;
+    min-width: 90px !important;
+    text-align: center;
+}
+.prev-btn{
+    border-right: 2px solid #e5e7eb !important;
+}
+.next-btn{
+    border-left: 2px solid #e5e7eb !important;
+}
+.count-div{
+    padding: 5px 8px !important;
+    background:rgba(248, 250, 252, 1) !important;
+    display:flex !important;
+    justify-content:space-between !important;
+    align-items:center !important;
+    border-radius:5px !important;
+    color:grey !important;
+    font-size:12px !important;
+    font-weight: bold;
+    margin: 0 5px;
+}
+.count-icon{
+    font-size: 16px;
+    color: grey;
+    margin: 0 5px;
+    font-weight: 400;
+}
+.reconnect-btn{
+    width: 150px;
+    border: 2px solid #e5e7eb;
+    text-align: center;
+    color: grey;
+    border-radius: 8px;
+    background: none;
+}
+.reconnect-btn:hover{
+    border: 2px solid #e5e7eb;
+}

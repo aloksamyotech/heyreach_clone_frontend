@@ -1,0 +1,16 @@
+.common-btn{
+    background: none !important;
+    border: 2px solid #e5e7eb !important;
+    /* padding: 10px 10px !important; */
+    color: grey !important;
+    width: 170px;
+    height: 45px;
+    border-radius: 8px;
+    margin: 0 10px !important;
+    margin-top: -5px !important;
+    font-weight: 400;
+}
+.css-9lyone-MuiInputBase-input-MuiOutlinedInput-input{
+    background: none !important;
+    padding: 11.5px 14px !important;
+}
