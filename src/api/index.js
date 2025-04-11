@@ -1,10 +1,10 @@
 import axios from 'axios';
 import axiosInstance from '../utils/axiosInstance';
-import { APIconfig, baseUrl } from 'utils/constant';
+import { APIconfig } from 'utils/constant';
 
 export const post = async (endpoint, data) => {
   try {
-    const response = await axios.post(`${baseUrl}/${endpoint}`, data, APIconfig);
+    const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/${endpoint}`, data, APIconfig);
     return response.data;
   } catch (error) {
     console.error('Error posting data', error);

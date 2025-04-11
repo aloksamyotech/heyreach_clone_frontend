@@ -137,7 +137,7 @@ const FirebaseRegister = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            const response = await post(`user/register`, values);
+            const response = await post(`user/auth/register`, values);
 
             if (response?.success === true) {
               toast.success('Signup Successfull, Please login');

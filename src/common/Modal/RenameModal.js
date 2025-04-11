@@ -14,7 +14,8 @@ const RenameModal = ({title,open,name,path,setModal,rowData})=>{
     }=useForm();
 
     const rename = async(data)=>{
-        alert("daat is updated : ",data);
+        alert("data is updated : ",path);
+        console.log("data : ",data);        
         reset();
         setModal(false);
     }
@@ -54,7 +55,7 @@ const RenameModal = ({title,open,name,path,setModal,rowData})=>{
                 </Typography>
                 <TextField
                     fullWidth
-                    label="New List Name"
+                    label="New Name"
                     variant="outlined"
                     {...register(name,{required:'Title Required'})}
                     sx={{

@@ -1,91 +1,49 @@
-import { Stack, Button, Container, Typography, Box, Card, Chip, TableHead, TableCell, Table, TableBody, TableRow, Alert, FormControl, InputAdornment, TextField, Select, MenuItem, InputLabel, Grid } from '@mui/material';
+import { Button, Container, Typography, Box, Card, Chip, TableHead, TableCell, Table, TableBody, TableRow, Alert, FormControl, InputAdornment, TextField, Select, MenuItem, InputLabel, Grid } from '@mui/material';
 import TableStyle from '../../ui-component/TableStyle';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import React from 'react';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { Link,Message,Mail, Add } from '@mui/icons-material';
+import { Link,Message,Mail, Add, Settings } from '@mui/icons-material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import ConnectAccount from './ConnectAccount';
-import { fetchData } from 'api';
-import {Tooltip} from '@mui/material';
+import { Tooltip } from '@mui/material';
 import './linkedAccount.css';
 import { Search,CompareArrows } from '@mui/icons-material';
 import ActionMenu from 'common/ActionMenu/ActionMenu';
+import SetLimitDrawer from 'common/Drawer/SetLimitDrawer';
+import { useLinkedinCustomHook } from './customHook';
+
 const LinkedAccounts = () => {
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [linkedinData, setAccount] = useState([
-    {
-      email:'dipeshdabi@gmail.com',
-      isConnected:true,
-    },
-    {
-      email:'vikaschouhan@gmail.com',
-      isConnected:true,
-    },
-    {
-      email:'vedantchellani@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'sachin@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'amitsharma@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'rohitsharma@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'alok@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'rahul@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'aman@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'deepak@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'jairaj@gmail.com',
-      isConnected:false,
-    },
-    {
-      email:'abclinkedin@gmail.com',
-      isConnected:false,
-    },
-    
-  ]);
+  const {
+    getPaginatedData,
+    totalCount,
+    linkedinAccount,
+    pageSize,
+    setPageSize,
+    currentPage,
+    setCurrentPage,
+    openDrawer,
+    setOpenDrawer,
+    openLimitDrawer,
+    setLimitDrawer,
+    rowData,
+    setRowData
+  } = useLinkedinCustomHook();
+  
+
   const toggleDrawer = (openDrawer) => {
     setOpenDrawer(openDrawer);
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 4;
-  const totalPages = Math.ceil(linkedinData.length / rowsPerPage);
-  
-  const paginatedData = linkedinData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
-
-  // const getData = async () => {
-  //   const response = await fetchData('linkedin/get_linkedIn_account');
-  //   setAccount(response?.data);
-  // };
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   useEffect(() => {
-    // getData();
-  }, []);
+    getPaginatedData();
+  }, [currentPage,pageSize]);
 
   return (
     <>  
+      <SetLimitDrawer open={openLimitDrawer} toggleDrawer={setLimitDrawer} rowData={rowData}/>
       <ConnectAccount open={openDrawer} toggleDrawer={toggleDrawer} />
       <Container>
         <Typography variant="h3" my={2}>LinkedIn Accounts</Typography>
@@ -196,7 +154,7 @@ const LinkedAccounts = () => {
                     </TableHead>
                     <TableBody sx={{border:'2px solid #e5e7eb'}}>
                       {
-                        paginatedData?.map((data)=>{
+                        linkedinAccount?.map((data)=>{
                           return(
                             <TableRow key={data?._id}>
                               <TableCell className='table-cell'>
@@ -236,9 +194,9 @@ const LinkedAccounts = () => {
                               </TableCell>
                               <TableCell className='table-cell'>
                                 {
-                                  !data?.row?.isConnected ?
+                                  !data?.isConnected ?
                                   <Button variant="outlined" className='reconnect-btn' startIcon={<CompareArrows className='count-icon'/>}>Re-connect</Button>
-                                  :''
+                                  :<Button variant="outlined" className='reconnect-btn' onClick={()=>{setRowData(data);setLimitDrawer(true);}} startIcon={<Settings className='count-icon'/>}>Configure Limit</Button>
                                 }
                               </TableCell>
                               <TableCell className='table-cell'>
@@ -251,24 +209,42 @@ const LinkedAccounts = () => {
                     </TableBody>
                   </Table>
                 </Grid>
-                <Grid item xs={12}>
-                    <Grid container p={2}>
-                        <Grid item xs={6} display="flex" justifyContent="flex-start">
-                          <Typography color="grey">
-                            Showing <span style={{ fontWeight: 'bold', color: 'grey' }}>{currentPage}-{totalPages}</span> of <span style={{ fontWeight: 'bold', color: 'grey' }}>4</span>
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6} display="flex" justifyContent="flex-end">
-                            <div style={{ background: 'rgba(233, 233, 233, 0.8)', border: 'none', borderRadius: '20px', display: 'flex', justifyContent: 'center' }}>
-                            <Button variant="outlined" className="paginate-btn prev-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
-                                Previous
-                            </Button>
-                            <Button variant="outlined" className="paginate-btn next-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} sx={{ marginLeft: 1 }}>
-                                Next
-                            </Button>
+                  <Grid item xs={12}>
+                      <Grid container p={2}>
+                          <Grid item xs={6} display="flex" justifyContent="flex-start">
+                            <Typography color="grey">
+                              Showing <span style={{ fontWeight: 'bold', color: 'grey' }}>{currentPage}-{totalPages}</span> of <span style={{ fontWeight: 'bold', color: 'grey' }}>{totalPages}</span>
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={6} display="flex" justifyContent="space-between" alignItems={'center'}>
+                            <Grid display="flex" justifyContent="center" alignItems={'center'}>
+                              <Typography color="grey" sx={{ mr: 1 }}>
+                                Rows per page:
+                              </Typography>
+                              <Select
+                                value={pageSize}
+                                onChange={(e) => {
+                                  setPageSize(e.target.value);
+                                }}
+                                size="small"
+                              >
+                                {[10, 25, 50].map((size) => (
+                                  <MenuItem key={size} value={size}>
+                                    {size}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </Grid>
+                            <div style={{ background: 'rgba(233, 233, 233, 0.8)', border: 'none', borderRadius: '20px', display: 'flex', justifyContent: 'flex-end' }}>
+                              <Button variant="outlined" className="paginate-btn prev-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+                                  Previous
+                              </Button>
+                              <Button variant="outlined" className="paginate-btn next-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} sx={{ marginLeft: 1 }}>
+                                  Next
+                              </Button>
                             </div>
-                        </Grid>
-                    </Grid>
+                          </Grid>
+                      </Grid>
                   </Grid>
                 </Grid>
               </Card>

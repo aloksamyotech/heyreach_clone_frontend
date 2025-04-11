@@ -126,9 +126,11 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            const response = await post(`user/login`, values);
+            const response = await post(`user/auth/login`, values);            
             if (response?.success === true) {
-              Cookies.set('token', response?.data?.accessToken);
+              Cookies.set('accesstoken', response?.data?.accessToken);
+              Cookies.set('refreshtoken', response?.data?.refreshToken);
+              localStorage.setItem('user',JSON.stringify(response?.data?.data));
               toast.success('Login Successfull');
               window.location.href="http://localhost:3000/";
             } else {

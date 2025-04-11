@@ -12,7 +12,7 @@ const DeleteModal = ({open,name,path,setDeleteModal,rowData})=>{
 
     const rename = async()=>{
         console.log("path",path);        
-        alert("daat is updated : ",rowData);
+        alert("data is updated : ",rowData);
         setDeleteModal(false);
     }
 
