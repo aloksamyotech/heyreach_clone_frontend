@@ -11,7 +11,7 @@ import {
   InputAdornment,
   IconButton,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
 } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
 

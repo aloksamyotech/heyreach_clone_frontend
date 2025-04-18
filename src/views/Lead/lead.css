@@ -72,7 +72,7 @@
     text-overflow: 'ellipsis';
     color: grey;
     text-align: left;
-    border-right: 2px solid #e5e7eb;
+    /* border-right: 2px solid #e5e7eb; */
 }
 .table-cell-div{
     max-width: 100%;

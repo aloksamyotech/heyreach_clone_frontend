@@ -24,7 +24,6 @@ export default function ViewCampaign() {
   
     const onSubmit = (data) => {
       setTabValue((prev) => prev + 1);
-      console.log("Final Data:", data);
       alert("Campaign Created Successfully!");
     };
     

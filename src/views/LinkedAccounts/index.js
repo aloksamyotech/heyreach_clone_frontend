@@ -166,7 +166,7 @@ const LinkedAccounts = () => {
                                       variant='outlined'
                                       label={data?.isConnected ? 'Connected': 'Not Connected'} 
                                       color={data?.isConnected ? 'success':'error'} 
-                                      sx={{color:data?.isConnected ? '#00e676b3':'#f98080',cursor:'pointer'}}
+                                      sx={{color:data?.isConnected ? '#00e676b3':'#f98080',cursor:'pointer',width:'120px'}}
                                     />
                                 </Tooltip>
                               </TableCell>
@@ -175,7 +175,7 @@ const LinkedAccounts = () => {
                                   <Tooltip sx={{width:'200px'}} title={"Your daily limit is set to 25 connection requests per day"}>
                                     <div className='count-div'>
                                       <Link sx={{transform:'rotate(135deg)'}} className='count-icon'/>
-                                      25/Day  
+                                      25/Day 
                                     </div>
                                   </Tooltip>
                                   <Tooltip sx={{width:'200px'}} title={"Your daily limit is set to 40 send messsage per day"}>
@@ -200,7 +200,7 @@ const LinkedAccounts = () => {
                                 }
                               </TableCell>
                               <TableCell className='table-cell'>
-                                  <ActionMenu  canDisconnect={true} canReConnect={true}/>
+                                  <ActionMenu  canDisconnect={true} canReConnect={!data?.isConnected}/>
                               </TableCell>
                             </TableRow>
                           )

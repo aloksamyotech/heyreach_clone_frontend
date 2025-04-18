@@ -2,8 +2,14 @@ import { Grid, TextField, InputAdornment, Button, IconButton, Autocomplete } fro
 import Typography from '@mui/material/Typography';
 import { useForm,Controller } from 'react-hook-form';
 import { Person,Link,List } from '@mui/icons-material';
+import { postData } from 'api';
+import { apiRoutes } from 'api/config';
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
-export default function FilterByUrl ({linkedAccounts}){
+export default function FilterByUrl ({linkedAccounts,type}){
+    const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user'));
     const {
         register,
         handleSubmit,
@@ -13,18 +19,20 @@ export default function FilterByUrl ({linkedAccounts}){
 
     const filterAccount = async (data) => {
         try {
-          setLoading(true);
-          const response = await post('linkedin/filterData', data);
-          if (response?.status === 201) {
-            toast.success('Lead Generated');
+          data={
+            ...data,
+            type:type,
+            userId:user?._id
+          }
+          const response = await postData(apiRoutes.createList, data);
+          if (response?.success) {
+            toast.success('List Created');
+            navigate(`/lead/importleads/${response?.data?._id}`);
           } else {
             toast.error('Failed');
           }
         } catch (error) {
-          console.log('Error while fetching', error);
-        }
-        finally{
-          setLoading(false);
+            toast.error('Erroe ',error);
         }
     };
 
@@ -32,7 +40,7 @@ export default function FilterByUrl ({linkedAccounts}){
         <Grid item xs={12} sm={12} md={12} sx={{ padding: '20px 20px', display: 'flex', flexDirection: 'column' }}>
             <form onSubmit={handleSubmit(filterAccount)}>
             <TextField
-                {...register('title', { required: 'Title is required' })}
+                {...register('name', { required: 'Title is required' })}
                 fullWidth
                 sx={{
                 marginBottom: '20px',
@@ -59,7 +67,7 @@ export default function FilterByUrl ({linkedAccounts}){
                 }}
             />
             <Controller
-                name="userId"
+                name="linkedInId"
                 control={control}
                 rules={{ required: 'Send Account is required' }}
                 render={({ field }) => (

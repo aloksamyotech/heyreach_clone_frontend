@@ -19,7 +19,6 @@ import { drawerWidth } from 'store/constant';
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
   const theme = useTheme();
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
-  console.log('MenuList ', MenuList);
 
   const drawer = (
     <>

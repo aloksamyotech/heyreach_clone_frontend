@@ -35,7 +35,6 @@ import { useNavigate } from 'react-router-dom';
 import RenameModal from 'common/Modal/RenameModal';
 import DeleteModal from 'common/Modal/DeleteModal';
 import CreateModal from 'common/Modal/CreateModal';
-import { filterLeads } from 'api/config';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 import LeadList from './LeadList';
 import LinkedInAccount from './LinkedInAccount';
@@ -61,7 +60,6 @@ const CreateCampaing = ()=>{
     
       const onSubmit = (data) => {
         setTabValue((prev) => prev + 1);
-        console.log("Final Data:", data);
         alert("Campaign Created Successfully!");
       };
     
@@ -79,7 +77,6 @@ const CreateCampaing = ()=>{
     return (
         <>
         <Container>
-            {console.log("tabvalue ; ",tabvalue)}
             <Stack direction="row" alignItems="center" mb={2} justifyContent={'flex-start'}>
                 <IconButton>
                     <ArrowBackIos fontSize='14px'/>
