@@ -30,7 +30,6 @@ import { apiRoutes } from 'api/config';
 import { useState } from 'react';
 import { ArrowBackIos } from '@mui/icons-material';
 import { useRef } from 'react';
-import ActionMenu from 'common/ActionMenu/ActionMenu';
 
 const LeadImporter = () => {
   const socket = useRef(null);
@@ -42,18 +41,15 @@ const LeadImporter = () => {
   
   const fetchList = async()=>{    
     const response = await fetchData(`${apiRoutes.getListById}/${id}`);
-      console.log("hell ",response?.data);
       setList(response?.data);
   }
 
   useEffect(()=>{
-    console.log("process.env.REACT_APP_BACKED_URL_WEBSOCKET: ",process.env.REACT_APP_BACKED_URL_WEBSOCKET);
-    socket.current = io(process.env.REACT_APP_BACKED_URL_WEBSOCKET, {
+    socket.current = io(process.env.REACT_APP_BACKEND_URL, {
       transports: ['websocket'],
     });
 
     socket.current.on("new_lead", (data) => {
-      console.log("data : ",data);      
       if (data.error) {
         setLeads(null);
       } else {
