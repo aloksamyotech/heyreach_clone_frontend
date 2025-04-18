@@ -280,9 +280,6 @@ const CampaignList = () => {
                   {paginatedData.map((row, index) => (
                     <TableRow key={index} className='table-row'>
                       <TableCell>
-                        {
-                            console.log("row.status : ",row.status)                         
-                        }
                         <Typography 
                             color={
                                 row.status === 'Draft' || row.status === 'Paused' ? 'warning.main' :
@@ -324,7 +321,6 @@ const CampaignList = () => {
                         <ActionMenu
                           canDelete={true}
                           canRename={true}
-                          canExport={true}
                           canView={true}
                           viewTitle="View List"
                           renameTitle="Rename List"
@@ -337,7 +333,6 @@ const CampaignList = () => {
                             setDeleteModal(true);
                             setRowData(row);
                           }}
-                          onExport={() => console.log("Export clicked")}
                         />
                       </TableCell>
                     </TableRow>

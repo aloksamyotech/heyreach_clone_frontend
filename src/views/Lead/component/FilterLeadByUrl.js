@@ -25,8 +25,6 @@ export default function FilterByUrl ({linkedAccounts,type}){
             userId:user?._id
           }
           const response = await postData(apiRoutes.createList, data);
-          console.log("response data : ",response.data);
-          console.log("response status : ",response.status);
           if (response?.success) {
             toast.success('List Created');
             navigate(`/lead/importleads/${response?.data?._id}`);
@@ -34,7 +32,7 @@ export default function FilterByUrl ({linkedAccounts,type}){
             toast.error('Failed');
           }
         } catch (error) {
-          console.log('Error while fetching', error);
+            toast.error('Erroe ',error);
         }
     };
 

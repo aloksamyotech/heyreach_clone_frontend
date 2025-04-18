@@ -14,6 +14,7 @@ import SearchByKeyword from './SearchByKeyword';
 import FilterLeadByUrl from './FilterLeadByUrl';
 import { apiRoutes } from 'api/config';
 import { useParams } from 'react-router';
+import { toast } from 'react-toastify';
 
 const ExtractLead = () => {
   const { type } = useParams();
@@ -38,7 +39,7 @@ const ExtractLead = () => {
         }))
       );
     } catch (error) {
-      console.log('error : ', error);
+      toast.error('error : ',error);
     }
   };
 

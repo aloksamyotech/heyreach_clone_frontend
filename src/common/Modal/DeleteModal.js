@@ -11,7 +11,6 @@ const DeleteModal = ({open,name,path,setDeleteModal,rowData})=>{
     // }=useForm();
 
     const deleteData = async()=>{
-        console.log("path",path);        
         alert("data is updated : ",rowData);
         setDeleteModal(false);
     }

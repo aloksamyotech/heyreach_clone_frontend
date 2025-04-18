@@ -14,7 +14,9 @@ import {
   Stack,
   Typography,
   Grid,
-  IconButton
+  IconButton,
+  Select,
+  MenuItem
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { ArrowBackIos, Edit } from '@mui/icons-material';
@@ -30,8 +32,14 @@ import ViewProfile from './ViewLeadProfile';
 import { exportToExcel } from 'utils/helperfunction';
 import { apiRoutes } from 'api/config';
 import { useCustomLeadHook } from '../customHook';
+import { useForm } from 'react-hook-form';
 const ViewLeadList = () => {
     const navigate = useNavigate();
+    const { 
+        watch,
+        register,
+        control 
+    } = useForm();
     const {
      setLimit,
      limit,
@@ -40,8 +48,11 @@ const ViewLeadList = () => {
      openModal,
      setModal,
      deleteModal,
-     setDeleteModal
-    } = useCustomLeadHook();
+     setDeleteModal,
+     fetchLead,
+     lead,
+     leadCount
+    } = useCustomLeadHook(watch);
 
     const [openDrawer, setOpenDrawer] = useState(false);
     const [rowData,setRowData] = useState(null);
@@ -162,8 +173,8 @@ const ViewLeadList = () => {
       ];
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 4;
-    const totalPages = Math.ceil(data.length / rowsPerPage);
-    const paginatedData = data.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+    const totalPages = Math.ceil(lead.length / leadCount);
+    const paginatedData = data.slice((page - 1) * limit, page * limit);
 
     const handleExport = ()=>{
         const bodyData = data?.map((data, index) => {
@@ -185,8 +196,12 @@ const ViewLeadList = () => {
     }
 
     useEffect(()=>{
-
-    },[]);
+        const interval = setTimeout(() => {
+            fetchLead(location?.state?._id);
+        }, 500);
+      
+        return () => clearTimeout(interval);
+    },[page,limit,watch('search')]);
 
     return (
         <Container>
@@ -213,6 +228,7 @@ const ViewLeadList = () => {
                             placeholder='Search Lead' 
                             variant="outlined" 
                             size="small" 
+                            {...register('name')}
                             InputProps={{ 
                                 startAdornment: <SearchIcon />, 
                                 sx: {
@@ -267,13 +283,13 @@ const ViewLeadList = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody className='table-body'>
-                                {paginatedData.map((row, index) => (
+                                {lead.map((row, index) => (
                                     <TableRow key={index} className="table-row">
                                             <TableCell key={ index} className="table-cell" >
                                                 <div style={{width:'100%',display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
                                                     <img src={row.image} style={{width:'50px',height:'50px',borderRadius:'50%',margin:'0 10px'}} alt='lead name'/>
                                                     <div style={{ maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                                                        {row.fullName}
+                                                        {row.name}
                                                     </div>
                                                 </div>    
                                             </TableCell>
@@ -314,7 +330,6 @@ const ViewLeadList = () => {
                                            <TableCell >
                                              <ActionMenu 
                                                 canDelete={true}
-                                                canExport={true}
                                                 canView={true}
                                                 viewTitle="View Profile"
                                                 deleteTitle="Delete Profile"
@@ -323,7 +338,6 @@ const ViewLeadList = () => {
                                                    setRowData(row);
                                                    setDeleteModal(true);
                                                 }}
-                                               onExport={() => console.log("Export Clicked")}
                                              />
                                            </TableCell>
                                     </TableRow>
@@ -337,15 +351,33 @@ const ViewLeadList = () => {
                         <Grid container p={2}>
                             <Grid item xs={6} display="flex" justifyContent="flex-start">
                                 <Typography color="grey">
-                                Showing <span style={{ fontWeight: 'bold', color: 'grey' }}>{currentPage}-{totalPages}</span> of <span style={{ fontWeight: 'bold', color: 'grey' }}>4</span>
+                                Showing <span style={{ fontWeight: 'bold', color: 'grey' }}>{currentPage}-{totalPages}</span> of <span style={{ fontWeight: 'bold', color: 'grey' }}>{totalPages}</span>
                                 </Typography>
                             </Grid>
                             <Grid item xs={6} display="flex" justifyContent="flex-end">
+                                <Grid display="flex" justifyContent="center" alignItems={'center'} px={1}>
+                                    <Typography color="grey" sx={{ mr: 1 }}>
+                                    Rows per page:
+                                    </Typography>
+                                    <Select
+                                    value={limit}
+                                    onChange={(e) => {
+                                        setLimit(e.target.value);
+                                    }}
+                                    size="small"
+                                    >
+                                    {[10, 25, 50].map((size) => (
+                                        <MenuItem key={size} value={size}>
+                                        {size}
+                                        </MenuItem>
+                                    ))}
+                                    </Select>
+                                </Grid>
                                 <div style={{ background: 'rgba(233, 233, 233, 0.8)', border: 'none', borderRadius: '20px', display: 'flex', justifyContent: 'center' }}>
-                                <Button variant="outlined" className="paginate-btn prev-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+                                <Button variant="outlined" className="paginate-btn prev-btn" disabled={page === 1} onClick={() => setCurrentPage(currentPage - 1)}>
                                     Previous
                                 </Button>
-                                <Button variant="outlined" className="paginate-btn next-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} sx={{ marginLeft: 1 }}>
+                                <Button variant="outlined" className="paginate-btn next-btn" disabled={page === totalPages} onClick={() => setCurrentPage(currentPage + 1)} sx={{ marginLeft: 1 }}>
                                     Next
                                 </Button>
                                 </div>

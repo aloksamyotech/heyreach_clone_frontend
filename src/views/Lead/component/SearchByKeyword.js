@@ -4,6 +4,7 @@ import { useState,useEffect } from 'react';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import { Grid, TextField, InputAdornment, Button,Autocomplete, IconButton } from '@mui/material';
+import { toast } from 'react-toastify';
 const API_KEY = process.env.REACT_APP_GOMAPS_PLACES_API_KEY;
 
 export default function SearchByKeyword ({linkedAccounts}){
@@ -31,7 +32,7 @@ export default function SearchByKeyword ({linkedAccounts}){
             setSuggestions(response?.data?.predictions);
           }
         }catch(error){
-          console.log("error : ",error);
+            toast.error('Error : ',error);
         }
     }
 
@@ -45,7 +46,7 @@ export default function SearchByKeyword ({linkedAccounts}){
             toast.error('Failed');
           }
         } catch (error) {
-          console.log('Error while fetching', error);
+          toast.error('Error while generate lead',error);
         }
         finally{
           setLoading(false);
@@ -230,7 +231,6 @@ export default function SearchByKeyword ({linkedAccounts}){
                                 borderBottom: "1px solid #ddd",
                             }}
                         >
-                            {console.log("place : ",place)}
                             <input type='checkbox' id='handleCheck' style={{border:'none',background:'#f4f6f6',padding:'10px',borderRadius:'8px'}} onClick={()=>{handleSelectSuggestion(place)}} />
                             <label htmlFor='handleCheck'>{place.description}</label>
                         </li>

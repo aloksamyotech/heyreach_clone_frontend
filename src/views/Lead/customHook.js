@@ -28,9 +28,12 @@ export const useCustomLeadHook = (watch)=>{
 
     const fetchLead = async(id)=>{
         var url = apiRoutes?.getPaginatedListLeadByListId+'?id='+id;
+        if(watch('search')){
+            url = url + '?search='+watch('search');
+        }
         const response = await fetchData(url);
-        setList(response?.data?.data);
-        setListCount(response?.data?.totalCount);
+        setLead(response?.data?.data);
+        setLeadCount(response?.data?.totalCount);
     }
 
     return {

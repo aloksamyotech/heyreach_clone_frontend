@@ -206,7 +206,6 @@ const Lead = () => {
                         <ActionMenu
                           canDelete={true}
                           canRename={true}
-                          canExport={true}
                           canView={true}
                           viewTitle="View List"
                           renameTitle="Rename List"
@@ -219,7 +218,6 @@ const Lead = () => {
                             setDeleteModal(true);
                             setRowData(row);
                           }}
-                          onExport={() => console.log("Export clicked")}
                         />
                       </TableCell>
                     </TableRow>
