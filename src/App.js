@@ -27,7 +27,7 @@ const AuthRegister3 = Loadable(lazy(() => import('views/pages/authentication/aut
 const App = () => {
   const customization = useSelector((state) => state.customization);
   const [isTokenExpired, setIsTokenExpired] = useState(false);
-  const token = Cookies.get('token');
+  const token = Cookies.get('refreshtoken');
   useEffect(() => {
     const checkTokenExpiration = () => {
       if (token) {
@@ -35,8 +35,9 @@ const App = () => {
           const decodedToken = jwtDecode(token || '');
           const currentTime = Math.floor(Date.now() / 1000);
           if (decodedToken?.exp < currentTime) {
-            Cookies.remove('token');
-            Cookies.remove('user');
+            Cookies.remove('refreshtoken');
+            Cookies.remove('accesstoken');
+            localStorage.removeItem('user');
             setIsTokenExpired(true);
           } else {
             setIsTokenExpired(false);

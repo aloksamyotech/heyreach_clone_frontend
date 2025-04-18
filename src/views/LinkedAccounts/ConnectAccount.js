@@ -18,14 +18,18 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { useForm } from 'react-hook-form';
 import { postData } from 'api';
 import { toast } from 'react-toastify';
+import VerifyOtp from './VerifyOtp';
 
 const ConnectAccount = (props) => {
   const { open, toggleDrawer } = props;
   const [showPassword, setShowPassword] = useState(false);
+  const [otpRequired,setOtpRequired] = useState(false);
 
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors }
   } = useForm();
 
@@ -35,8 +39,13 @@ const ConnectAccount = (props) => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await postData('linkedin/connect-account', data);
-      if (response?.data?.success) {
+      const response = await postData('user/connect-account', data);
+      if(response?.data?.otpRequired){
+        setValue('sessionId',response?.data?.sessionId);
+        setOtpRequired(true);
+        toast.success('Otp Send Successfully!\n Please Verify OTP');
+      }
+      else if (response?.data?.success) {
         toast.success(response?.data?.message);
         toggleDrawer(false);
       } else {
@@ -48,6 +57,7 @@ const ConnectAccount = (props) => {
     }
   };
 
+
   return (
     <SwipeableDrawer
       anchor="right"
@@ -55,14 +65,14 @@ const ConnectAccount = (props) => {
       onClose={() => toggleDrawer(false)}
       sx={{
         '& .MuiDrawer-paper': {
-          width: '35%',
+          width: '45%',
           borderTopLeftRadius: '20px',
           borderBottomLeftRadius: '20px'
         }
       }}
     >
       <Box sx={{ padding: '10px' }}>
-        <Typography variant="h4" m={2} sx={{ fontWeight: 'bold', marginBottom: '10px' }}>
+        <Typography variant="h3" m={2} sx={{ fontWeight: 'bold', marginBottom: '10px' }}>
           Connect LinkedIn Account
         </Typography>
       </Box>
@@ -127,6 +137,11 @@ const ConnectAccount = (props) => {
           </Grid>
         </form>
       </Box>
+      {
+        otpRequired &&(
+         <VerifyOtp sessionId={watch('sessionId')}/>
+        )
+      }
     </SwipeableDrawer>
   );
 };

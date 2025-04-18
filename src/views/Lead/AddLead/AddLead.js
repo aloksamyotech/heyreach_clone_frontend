@@ -1,17 +1,17 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { Stack, Container, Grid } from '@mui/material';
-import './lead.css';
+import '../lead.css';
 import Typography from '@mui/material/Typography';
-import searchbar from '../../assets/images/searchImage.svg';
-import salesnavigator from '../../assets/images/salesnavigator.png';
-import recruiter from '../../assets/images/linkedinrecruiter.svg';
-import events from '../../assets/images/eventatendeessearch.svg';
-import post from '../../assets/images/postengagementssearch.svg';
-import seacrhcsv from '../../assets/images/import-csv-active.svg';
-import company from '../../assets/images/companysearch.svg';
-import account from '../../assets/images/download.png';
-import rightimg from '../../assets/images/rightimg.png';
+import searchbar from '../../../assets/images/searchImage.svg';
+import salesnavigator from '../../../assets/images/salesnavigator.png';
+import recruiter from '../../../assets/images/linkedinrecruiter.svg';
+import events from '../../../assets/images/eventatendeessearch.svg';
+import post from '../../../assets/images/postengagementssearch.svg';
+import seacrhcsv from '../../../assets/images/import-csv-active.svg';
+import company from '../../../assets/images/companysearch.svg';
+import account from '../../../assets/images/download.png';
+import rightimg from '../../../assets/images/rightimg.png';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { ArrowForwardIosOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';

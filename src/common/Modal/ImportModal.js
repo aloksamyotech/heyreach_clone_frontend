@@ -1,104 +1,109 @@
-import { Modal,Button,TextField,Box, Typography, IconButton, Alert, Grid } from "@mui/material";
-import { useForm } from "react-hook-form";
-import CloseIcon from "@mui/icons-material/Close";
-import { useEffect } from "react";
+import React, { useState } from "react";
+import { Modal, Box, Typography, Button, Alert } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-const ImportModal = ({open,name,path,setImportModal,rowData})=>{
-    const {
-        register,
-        watch,
-        control,
-        reset,
-        handleSubmit,
-        setValue
-    }=useForm();
+const ImportModal = ({ open,name, setImportModal,rowData,path }) => {
+  const [fileName, setFileName] = useState("");
 
-    const rename = async(data)=>{
-        alert("daat is updated : ",data);
-        alert("daat is path : ",path);
-        reset();
-        setImportModal(false);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFileName(file.name);
     }
+  };
 
-    useEffect(()=>{
-        if(rowData){
-            setValue(name,rowData[name]);
-        }
-    })
-    return(
-        <Modal open={open} id="importModal"  onClose={()=>{reset();setImportModal(false)}}>
-            <Box
-                sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    width: 600,
-                    bgcolor: "background.paper",
-                    boxShadow: 24,
-                    p: 3,
-                    borderRadius: 2,
-                }}
+  return (
+    <Modal open={open} onClose={()=>{setImportModal(false)}}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 450,
+          bgcolor: "white",
+          boxShadow: 24,
+          p: 3,
+          borderRadius: 2,
+          outline: "none",
+        }}
+      >
+        {/* Title */}
+        <Typography variant="h4" fontWeight="bold" textAlign="center">
+          Import from Spreadsheet
+        </Typography>
+
+        {/* Information Box */}
+        <Box
+          p={2}
+          mt={2}
+          sx={{
+            // border: "2px solid #3f51b5",
+            borderRadius: "8px",
+            // backgroundColor: "#f5f5ff",
+            textAlign: "center",
+          }}
+        >
+          <Alert severity="info" variant='outlined' sx={{color:'#1c64f2'}}> 
+            *Make sure you have the mandatory fields First Name, Last Name,
+            and LinkedIn Profile URL populated within the CSV file.
+            <br />
+            Rows with missing mandatory data will be excluded.
+          </Alert>
+        </Box>
+
+        {/* File Upload Section */}
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          mt={2}
+          p={2}
+          sx={{
+            border: "1px solid #ddd",
+            borderRadius: "6px",
+            textAlign: "center",
+          }}
+        >
+          <input
+            type="file"
+            accept=".csv"
+            id="upload-file"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+          <label htmlFor="upload-file">
+            <Button
+              variant="outlined"
+              component="span"
+              startIcon={<CloudUploadIcon />}
             >
-                <Box display="flex" justifyContent="end" alignItems="start" sx={{marginTop:'-20px'}}>
-                    <IconButton onClick={()=>{setImportModal(false)}}>
-                        <CloseIcon />
-                    </IconButton>
-                </Box>
-                <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
-                    <Typography variant="h3" fontWeight="bold" align="center">
-                        Import From Spreadsheet
-                    </Typography>
-                </Box>
-                <Alert severity="info" variant='outlined' sx={{color:'#1c64f2',margin:'20px 0'}}> *Make sure you have the mandatory fields First Name, Last Name and LinkedIn Profile URL populated within the CSV file. In case you have some empty cells in the CSV file, we will still import it, but will exclude the whole row where theres a missing data for the mandatory fields.</Alert>
-                <Grid display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{height:'45px',border:'2px solid #e5e7eb',borderRadius:'10px'}}>
-                    <TextField
-                        type="file"
-                        variant="outlined"
-                        textAlign="center"
-                        inputProps={{ accept: "image/*" }}
-                        {...register(name,{required:'File Required'})}
-                        sx={{
-                                background: "none",
-                                height:'45px',
-                                "& .MuiOutlinedInput-root": {
-                                    background:'none !important',
-                                "& fieldset": { border: "none",background:'none !important' }, // Removes default border
-                                "&:hover fieldset": { border: "none",background:'none !important' },
-                                "&.Mui-focused fieldset": { border: "none",background:'none !important' },
-                            }
-                        }}
-                    >
-                        <label htmlFor="file-upload">
-                            <Button
-                                variant="contained"
-                                component="span"
-                                sx={{
-                                backgroundColor: "transparent",
-                                color: "#6b7280",
-                                border: "1px solid #6b7280",
-                                "&:hover": { backgroundColor: "rgba(107, 114, 128, 0.1)" },
-                                }}
-                            >
-                                Upload File
-                            </Button>
-                            </label>
-                    </TextField>
-                    {/* <Typography variant="h5" fontWeight={'400'} color={'grey'} >Upload Spreadsheet | 0 leads to import</Typography> */}
-                </Grid>    
-                <Box mt={2} textAlign="right">
-                <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{display:'inline-block',margin:'0 auto',}}
-                    onClick={handleSubmit(rename)}
-                >
-                    Import
-                </Button>
-                </Box>
-            </Box>
-        </Modal>
-    )
-}
+              Upload spreadsheet
+            </Button>
+          </label>
+          <Typography variant="body2" mt={1} color="textSecondary">
+            {fileName ? fileName : "0 leads to import"}
+          </Typography>
+        </Box>
+
+        {/* Action Buttons */}
+        <Box display="flex" justifyContent="flex-end" mt={3}>
+          <Button onClick={()=>{setImportModal(false)}} color="error">
+            Cancel
+          </Button>
+          <Button
+            onClick={()=>{setImportModal(false)}}
+            color="primary"
+            variant="contained"
+            sx={{ ml: 2 }}
+          >
+            Import
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
+  );
+};
 
 export default ImportModal;

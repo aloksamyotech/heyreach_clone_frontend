@@ -9,10 +9,12 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 const LeadManagement = Loadable(lazy(() => import('views/Lead')));
 const LinkedAccounts = Loadable(lazy(() => import('views/LinkedAccounts')));
 const MyNetwork = Loadable(lazy(() => import('views/MyNetwork')));
-const AddLead = Loadable(lazy(() => import('views/Lead/AddLead')));
-const ExtractLead = Loadable(lazy(() => import('views/Lead/ExtractLead')));
-const Campaign = Loadable(lazy(() => import('views/Caimpaign/Campaign')));
+const AddLead = Loadable(lazy(() => import('views/Lead/AddLead/AddLead')));
+const ExtractLead = Loadable(lazy(() => import('views/Lead/AddLead/ExtractLead')));
 const ViewLeadList = Loadable(lazy(() => import('views/Lead/ViewList')));
+const Campaign = Loadable(lazy(() => import('views/Caimpaign/index')));
+const CreateCampaign = Loadable(lazy(() => import('views/Caimpaign/component/CreateCampaign')));
+const ViewCampaign = Loadable(lazy(() => import('views/Caimpaign/component/ViewCampaign')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -37,6 +39,10 @@ const MainRoutes = {
     },
     {
       path: '/lead/add',
+      element: <AddLead />
+    },
+    {
+      path: '/lead/add/:type',
       element: <ExtractLead />
     },
     {
@@ -44,12 +50,20 @@ const MainRoutes = {
       element: <ViewLeadList />
     },
     {
-      path: '/my-network',
-      element: <MyNetwork />
-    },
-    {
       path: '/campaigns',
       element: <Campaign />
+    },
+    {
+      path: '/campaigns/create',
+      element: <CreateCampaign />
+    },
+    {
+      path: '/campaigns/viewcampaign/:id',
+      element: <ViewCampaign />
+    },
+    {
+      path: '/my-network',
+      element: <MyNetwork />
     },
     {
       path: '/unibox',

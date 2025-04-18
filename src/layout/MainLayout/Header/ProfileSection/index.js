@@ -49,12 +49,11 @@ const ProfileSection = () => {
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
-  /**
-   * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-   * */
   const anchorRef = useRef(null);
   const handleLogout = async () => {
-    Cookies.remove('token');
+    Cookies.remove('accesstoken');
+    Cookies.remove('refreshtoken');
+    localStorage.removeItem('user');
     // navigate('/login');
     window.location.href="http://localhost:3000/login"
   };

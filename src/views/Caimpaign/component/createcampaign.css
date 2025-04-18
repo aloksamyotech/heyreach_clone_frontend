@@ -92,11 +92,19 @@
     margin-top: -5px !important;
     font-weight: 400;
 }
-.input-pos-relative{
-    position: relative;
+.inputLabel{
+    color: gray;
+    font-weight: 500;
+    left: 20%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.7s;
 }
-.input-pos-relative .ul-pos-absolute{
-    position: absolute;
-    top: -5% !important;
-    left: 20% !important;
+.inputLabel:hover{
+    color: gray;
 }
