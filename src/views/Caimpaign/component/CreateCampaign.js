@@ -35,7 +35,6 @@ import { useNavigate } from 'react-router-dom';
 import RenameModal from 'common/Modal/RenameModal';
 import DeleteModal from 'common/Modal/DeleteModal';
 import CreateModal from 'common/Modal/CreateModal';
-import { filterLeads } from 'api/config';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 import LeadList from './LeadList';
 import LinkedInAccount from './LinkedInAccount';

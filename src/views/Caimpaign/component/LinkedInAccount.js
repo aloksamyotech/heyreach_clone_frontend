@@ -20,7 +20,6 @@ import ActionMenu from 'common/ActionMenu/ActionMenu';
 import { useForm } from 'react-hook-form';
 import './../campaign.css';
 import { useNavigate } from 'react-router-dom';
-import { filterLeads } from 'api/config';
 // import { exportToExcel } from 'utils/helperfunction';
 // ----------------------------------------------------------------------
 

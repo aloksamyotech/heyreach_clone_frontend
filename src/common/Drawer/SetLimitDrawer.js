@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 
 import { Close } from '@mui/icons-material';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { postData } from 'api';
 import { toast } from 'react-toastify';
 import './drawer.css';
@@ -86,38 +86,261 @@ const SetLimitDrawer = (props) => {
         <Box sx={{border:'none'}} my={2} py={1} px={2}>
             <Typography variant='h5' my={1}>Max Follows/Day</Typography>
             <Grid display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <input type='range' min={0} max={40} className='textfield-css' {...register('follow',{required:'Follow range required'})} />
-                <TextField type='number' min={0} max={40} {...register('follow',{required:'Follow range required'})} /> 
+            <Controller
+                name="follow"
+                control={control}
+                defaultValue={40}
+                rules={{ required: 'Follow range required' }}
+                render={({ field }) => (
+                  <>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      className="textfield-css"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <TextField
+                      type="number"
+                      inputProps={{ min: 0, max: 100, inputMode: 'numeric', style: { appearance: 'textfield' } }}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={!!errors.follow}
+                      helperText={errors.follow?.message}
+                      sx={{
+                        '& input[type=number]': {
+                          MozAppearance: 'textfield',
+                        },
+                        '& input[type=number]::-webkit-outer-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                        '& input[type=number]::-webkit-inner-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                      }}
+                    />
+                  </>
+                )}
+              />
+
             </Grid>
 
             <Typography variant='h5' my={1}>Max Messages/Day</Typography>
             <Grid display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <input type='range' min={0} max={40} className='textfield-css' {...register('message',{required:'Follow range required'})} />
-                <TextField type='number' min={0} max={40} {...register('message',{required:'Message range required'})} /> 
+            <Controller
+                name="message"
+                control={control}
+                defaultValue={40}
+                rules={{ required: 'Message range required' }}
+                render={({ field }) => (
+                  <>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      className="textfield-css"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <TextField
+                      type="number"
+                      inputProps={{ min: 0, max: 100, inputMode: 'numeric', style: { appearance: 'textfield' } }}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={!!errors.follow}
+                      helperText={errors.follow?.message}
+                      sx={{
+                        '& input[type=number]': {
+                          MozAppearance: 'textfield',
+                        },
+                        '& input[type=number]::-webkit-outer-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                        '& input[type=number]::-webkit-inner-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                      }}
+                    />
+                  </>
+                )}
+              />
             </Grid>
 
             <Typography variant='h5' my={1}>Max InMail Messages/Day</Typography>
             <Grid display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <input type='range' min={0} max={40} className='textfield-css' {...register('mail',{required:'Follow range required'})} />
-                <TextField type='number' min={0} max={40} {...register('mail',{required:'Mail range required'})} /> 
+            <Controller
+                name="mail"
+                control={control}
+                defaultValue={40}
+                rules={{ required: 'Mail range required' }}
+                render={({ field }) => (
+                  <>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      className="textfield-css"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <TextField
+                      type="number"
+                      inputProps={{ min: 0, max: 100, inputMode: 'numeric', style: { appearance: 'textfield' } }}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={!!errors.follow}
+                      helperText={errors.follow?.message}
+                      sx={{
+                        '& input[type=number]': {
+                          MozAppearance: 'textfield',
+                        },
+                        '& input[type=number]::-webkit-outer-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                        '& input[type=number]::-webkit-inner-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                      }}
+                    />
+                  </>
+                )}
+              />
             </Grid>
 
             <Typography variant='h5' my={1}>Max Connection Requests/Day</Typography>
             <Grid display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <input type='range' min={0} max={40} className='textfield-css' {...register('connection',{required:'Follow range required'})} />
-                <TextField type='number' min={0} max={40} {...register('connection',{required:'Connection Request range required'})} /> 
+            <Controller
+                name="connection"
+                control={control}
+                defaultValue={40}
+                rules={{ required: 'Connection range required' }}
+                render={({ field }) => (
+                  <>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      className="textfield-css"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <TextField
+                      type="number"
+                      inputProps={{ min: 0, max: 100, inputMode: 'numeric', style: { appearance: 'textfield' } }}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={!!errors.follow}
+                      helperText={errors.follow?.message}
+                      sx={{
+                        '& input[type=number]': {
+                          MozAppearance: 'textfield',
+                        },
+                        '& input[type=number]::-webkit-outer-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                        '& input[type=number]::-webkit-inner-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                      }}
+                    />
+                  </>
+                )}
+              />
             </Grid>
 
             <Typography variant='h5' my={1}>Max Profile Views /Day</Typography>
             <Grid display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <input type='range' min={0} max={40} className='textfield-css' {...register('profile',{required:'Follow range required'})} />
-                <TextField type='number' min={0} max={40} {...register('profile',{required:'Profile range required'})} /> 
+            <Controller
+                name="profile"
+                control={control}
+                defaultValue={40}
+                rules={{ required: 'Profile range required' }}
+                render={({ field }) => (
+                  <>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      className="textfield-css"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <TextField
+                      type="number"
+                      inputProps={{ min: 0, max: 100, inputMode: 'numeric', style: { appearance: 'textfield' } }}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={!!errors.follow}
+                      helperText={errors.follow?.message}
+                      sx={{
+                        '& input[type=number]': {
+                          MozAppearance: 'textfield',
+                        },
+                        '& input[type=number]::-webkit-outer-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                        '& input[type=number]::-webkit-inner-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                      }}
+                    />
+                  </>
+                )}
+              />
             </Grid>
 
             <Typography variant='h5' my={1}>Max Post Likes/Day</Typography>
             <Grid display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <input type='range' min={0} max={40} className='textfield-css' {...register('post',{required:'Follow range required'})} />
-                <TextField type='number' min={0} max={40} {...register('post',{required:'Post range required'})} /> 
+            <Controller
+                name="post"
+                control={control}
+                defaultValue={40}
+                rules={{ required: 'Post range required' }}
+                render={({ field }) => (
+                  <>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      className="textfield-css"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <TextField
+                      type="number"
+                      inputProps={{ min: 0, max: 100, inputMode: 'numeric', style: { appearance: 'textfield' } }}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={!!errors.follow}
+                      helperText={errors.follow?.message}
+                      sx={{
+                        '& input[type=number]': {
+                          MozAppearance: 'textfield',
+                        },
+                        '& input[type=number]::-webkit-outer-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                        '& input[type=number]::-webkit-inner-spin-button': {
+                          WebkitAppearance: 'none',
+                          margin: 0,
+                        },
+                      }}
+                    />
+                  </>
+                )}
+              />
             </Grid>
         </Box>
       </Box>

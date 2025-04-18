@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Button,
   Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -18,7 +15,6 @@ import {
   OutlinedInput,
   Stack,
   Typography,
-  useMediaQuery
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -26,25 +22,14 @@ import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Google from 'assets/images/icons/social-google.svg';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router';
 import { post } from 'api';
 import Cookies from 'js-cookie';
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
-
-  const navigate = useNavigate();
-
-  const googleHandler = async () => {
-    console.error('Login');
-  };
-
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);

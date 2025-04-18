@@ -11,8 +11,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { useForm } from 'react-hook-form';
 import { postData, putData } from 'api';
 import { toast } from 'react-toastify';
+import { apiRoutes } from 'api/config';
 
-const VerifyOtp = ({sessionId})=>{
+const VerifyOtp = ()=>{
     const [timer, setTimer] = useState(120);
     const {
         register,
@@ -21,7 +22,7 @@ const VerifyOtp = ({sessionId})=>{
     } = useForm();
 
     const verifyOtp = async()=>{
-      const response = await postData('/scrap/linkedin/verifyOtp',{sessionId});
+      const response = await postData(apiRoutes?.verifyOtp,{sessionId:localStorage.getItem('sessionId')});
       if(response?.success){
         toast.success(response?.data?.message);
       }
@@ -29,7 +30,7 @@ const VerifyOtp = ({sessionId})=>{
 
     const updateOtp = async (data) => {
         try {
-          const response = await putData('user/linkedinAccount/updateOtp', {...data});
+          const response = await putData(apiRoutes?.updateOtp, {...data});
           if (response?.data?.success) {
             toast.success(response?.data?.message);
           } else {

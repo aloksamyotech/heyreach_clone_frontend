@@ -19,11 +19,16 @@ import { useForm } from 'react-hook-form';
 import { postData } from 'api';
 import { toast } from 'react-toastify';
 import VerifyOtp from './VerifyOtp';
+import { useLinkedinCustomHook } from './customHook';
 
 const ConnectAccount = (props) => {
+  const {
+      otpRequired,
+      setOtpRequired,
+      connectAccount
+  } = useLinkedinCustomHook();
   const { open, toggleDrawer } = props;
   const [showPassword, setShowPassword] = useState(false);
-  const [otpRequired,setOtpRequired] = useState(false);
 
   const {
     register,
@@ -37,27 +42,6 @@ const ConnectAccount = (props) => {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit = async (data) => {
-    try {
-      const response = await postData('user/connect-account', data);
-      if(response?.data?.otpRequired){
-        setValue('sessionId',response?.data?.sessionId);
-        setOtpRequired(true);
-        toast.success('Otp Send Successfully!\n Please Verify OTP');
-      }
-      else if (response?.data?.success) {
-        toast.success(response?.data?.message);
-        toggleDrawer(false);
-      } else {
-        toast.error(response?.data?.message)
-        toggleDrawer(true);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-
   return (
     <SwipeableDrawer
       anchor="right"
@@ -65,7 +49,7 @@ const ConnectAccount = (props) => {
       onClose={() => toggleDrawer(false)}
       sx={{
         '& .MuiDrawer-paper': {
-          width: '45%',
+          width: '40%',
           borderTopLeftRadius: '20px',
           borderBottomLeftRadius: '20px'
         }
@@ -77,8 +61,9 @@ const ConnectAccount = (props) => {
         </Typography>
       </Box>
       <Divider />
+      { !otpRequired?
       <Box p={4}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(connectAccount)}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <FormLabel>Your LinkedIn Email Address</FormLabel>
@@ -137,10 +122,7 @@ const ConnectAccount = (props) => {
           </Grid>
         </form>
       </Box>
-      {
-        otpRequired &&(
-         <VerifyOtp sessionId={watch('sessionId')}/>
-        )
+      :<VerifyOtp />
       }
     </SwipeableDrawer>
   );

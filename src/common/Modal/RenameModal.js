@@ -2,6 +2,8 @@ import { Modal,Button,TextField,Box, Typography, IconButton } from "@mui/materia
 import { useForm } from "react-hook-form";
 import CloseIcon from "@mui/icons-material/Close";
 import { useEffect } from "react";
+import { useCustomHook } from "./customHook";
+import { toast } from "react-toastify";
 
 const RenameModal = ({title,open,name,path,setModal,rowData})=>{
     const {
@@ -11,11 +13,17 @@ const RenameModal = ({title,open,name,path,setModal,rowData})=>{
         reset,
         handleSubmit,
         setValue
-    }=useForm();
+    } = useForm();
 
-    const rename = async(data)=>{
-        alert("data is updated : ",path);
-        console.log("data : ",data);        
+    const { updateData } = useCustomHook();
+
+    const renameData = async(data)=>{
+        const response = await updateData(path+'/'+rowData?._id,data);
+        if(response?.success){
+           toast.success(response?.data?.message);
+        }else{
+           toast.error(response?.data?.message);
+        }
         reset();
         setModal(false);
     }
@@ -79,7 +87,7 @@ const RenameModal = ({title,open,name,path,setModal,rowData})=>{
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleSubmit(rename)}
+                    onClick={handleSubmit(renameData)}
                 >
                     Confirm
                 </Button>

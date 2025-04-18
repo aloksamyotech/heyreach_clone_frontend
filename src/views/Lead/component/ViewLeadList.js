@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState,useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -21,21 +21,30 @@ import { ArrowBackIos, Edit } from '@mui/icons-material';
 import ActionMenu from 'common/ActionMenu/ActionMenu';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import './lead.css';
+import '../lead.css';
 import RenameModal from 'common/Modal/RenameModal';
 import { useLocation,useNavigate } from 'react-router';
-import { filterLeads } from 'api/config';
 import DeleteModal from 'common/Modal/DeleteModal';
 import ImportModal from 'common/Modal/ImportModal';
 import ViewProfile from './ViewLeadProfile';
-import { exportToExcel } from 'utils/helperfunction'; 
-
+import { exportToExcel } from 'utils/helperfunction';
+import { apiRoutes } from 'api/config';
+import { useCustomLeadHook } from '../customHook';
 const ViewLeadList = () => {
     const navigate = useNavigate();
-    const [openModal,setModal] = useState(false);
+    const {
+     setLimit,
+     limit,
+     page,
+     setPage,
+     openModal,
+     setModal,
+     deleteModal,
+     setDeleteModal
+    } = useCustomLeadHook();
+
     const [openDrawer, setOpenDrawer] = useState(false);
     const [rowData,setRowData] = useState(null);
-    const [deleteModal, setDeleteModal] = useState(false);
     const [importModal, setImportModal] = useState(false);
     const location = useLocation();
     const toggleDrawer = (openDrawer) => {
@@ -171,17 +180,20 @@ const ViewLeadList = () => {
                 'Profile URL':data?.linkedin
             };
         });     
-        console.log("bodyData : ",bodyData);
         
         exportToExcel(bodyData, location.state.name);
     }
 
+    useEffect(()=>{
+
+    },[]);
+
     return (
         <Container>
             <ViewProfile open={openDrawer} toggleDrawer={toggleDrawer} rowData={rowData}/>
-            <RenameModal open={openModal} title={"List"} name="name" path={filterLeads} setModal={setModal} rowData={location?.state}/>
-            <DeleteModal open={deleteModal} name="fullName" path={filterLeads} setDeleteModal={setDeleteModal} rowData={rowData} />
-            <ImportModal open={importModal} name="file" path={filterLeads} setImportModal={setImportModal} rowData={rowData} />
+            <RenameModal open={openModal} title={"List"} name="name" path={apiRoutes?.updateList} setModal={setModal} rowData={location?.state}/>
+            <DeleteModal open={deleteModal} name="fullName" path={'filterLeads'} setDeleteModal={setDeleteModal} rowData={rowData} />
+            <ImportModal open={importModal} name="file" path={'filterLeads'} setImportModal={setImportModal} rowData={rowData} />
 
             <Stack direction="row" alignItems="center" mb={2} justifyContent={'flex-start'}>
                 <IconButton onClick={() => { navigate('/lead')}}>

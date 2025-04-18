@@ -10,7 +10,7 @@ const DeleteModal = ({open,name,path,setDeleteModal,rowData})=>{
     //     setValue
     // }=useForm();
 
-    const rename = async()=>{
+    const deleteData = async()=>{
         console.log("path",path);        
         alert("data is updated : ",rowData);
         setDeleteModal(false);
@@ -45,7 +45,7 @@ const DeleteModal = ({open,name,path,setDeleteModal,rowData})=>{
                     <Button
                         variant="contained"
                         sx={{color:'white',background:'rgba(239, 68, 68, 1)',display:'inline-block',}}
-                        onClick={()=>{rename()}}
+                        onClick={()=>{deleteData()}}
                     >
                         Confirm
                     </Button>

@@ -30,7 +30,6 @@ import { useNavigate } from 'react-router-dom';
 import RenameModal from 'common/Modal/RenameModal';
 import DeleteModal from 'common/Modal/DeleteModal';
 import CreateModal from 'common/Modal/CreateModal';
-import { filterLeads } from 'api/config';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 // import { exportToExcel } from 'utils/helperfunction';
 // ----------------------------------------------------------------------
@@ -130,9 +129,9 @@ const CampaignList = () => {
   return (
     <>
       <Container>
-        <CreateModal open={create} setModal={setCreate} path={filterLeads} name={'name'} />
-        <DeleteModal open={deleteModal} name="name" path={filterLeads} setDeleteModal={setDeleteModal} rowData={rowData} />
-        <RenameModal open={openModal} title={"Campaign"} name="name" path={filterLeads} setModal={setModal} rowData={rowData} />
+        <CreateModal open={create} setModal={setCreate} path={'filterLeads'} name={'name'} />
+        <DeleteModal open={deleteModal} name="name" path={'filterLeads'} setDeleteModal={setDeleteModal} rowData={rowData} />
+        <RenameModal open={openModal} title={"Campaign"} name="name" path={'filterLeads'} setModal={setModal} rowData={rowData} />
         <Stack direction="row" alignItems="center" mb={5} justifyContent={'space-between'}>
           <Typography variant="h2">Campaigns</Typography>
         </Stack>

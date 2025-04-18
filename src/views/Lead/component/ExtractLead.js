@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Stack, Container, Grid, Tabs, Tab, IconButton,} from '@mui/material';
-import './../lead.css';
+import '../lead.css';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
 import searchbar from '../../../assets/images/searchImage.svg';
@@ -12,8 +12,12 @@ import { useEffect } from 'react';
 import DynamicLoader from 'ui-component/Loader';
 import SearchByKeyword from './SearchByKeyword';
 import FilterLeadByUrl from './FilterLeadByUrl';
+import { apiRoutes } from 'api/config';
+import { useParams } from 'react-router';
 
 const ExtractLead = () => {
+  const { type } = useParams();
+  const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
 
@@ -26,7 +30,7 @@ const ExtractLead = () => {
 
   const getLinkedInAccount = async () => {
     try {
-      const response = await fetchData('/linkedin/get_linkedIn_account');
+      const response = await fetchData(`${apiRoutes?.getLinkedInAccountByUser}/${user?._id}`);
       setLinkedAccount(
         response?.data?.map((item) => ({
           label: item?.email,
@@ -102,9 +106,9 @@ const ExtractLead = () => {
             </Tabs>
             <Grid container>
               {tabvalue === 1 ? (
-                <FilterLeadByUrl linkedAccounts={linkedAccounts} />
+                <FilterLeadByUrl linkedAccounts={linkedAccounts} type={type} />
               ) : (
-                <SearchByKeyword linkedAccounts={linkedAccounts}/>
+                <SearchByKeyword linkedAccounts={linkedAccounts} type={type}/>
               )}
             </Grid>
           </Box>
