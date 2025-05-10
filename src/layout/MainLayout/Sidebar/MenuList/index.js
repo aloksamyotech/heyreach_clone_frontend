@@ -19,7 +19,6 @@ const MenuList = () => {
         );
     }
   });
-
   return <>{navItems}</>;
 };
 

@@ -1,31 +1,17 @@
-// assets
-import {
-  IconHome,
-  IconCalendarEvent,
-  IconMail,
-  IconFileUpload,
-  IconFileInvoice,
-  IconPhoneCall,
-  IconAntennaBars5,
-  IconChecklist,
-  IconNotebook,
-  IconPhoneCheck,
-  IconUsers
-} from '@tabler/icons';
-
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Diversity2Icon from '@mui/icons-material/Diversity2';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import SmsIcon from '@mui/icons-material/Sms';
 // constant
 const icons = {
-  IconHome,
-  IconCalendarEvent,
-  IconMail,
-  IconFileUpload,
-  IconFileInvoice,
-  IconPhoneCall,
-  IconAntennaBars5,
-  IconChecklist,
-  IconNotebook,
-  IconPhoneCheck,
-  IconUsers
+  LinkedInIcon,
+  DashboardIcon,
+  AccountCircleIcon,
+  Diversity2Icon,
+  TelegramIcon,
+  SmsIcon
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -38,16 +24,48 @@ const dashboard = {
       id: 'default',
       title: 'Dashboard',
       type: 'item',
-      url: '/dashboard/default',
-      icon: icons.IconHome,
+      url: '/dashboard',
+      icon: icons.DashboardIcon,
       breadcrumbs: false
     },
     {
-      id: '01',
-      title: 'Lead Management',
+      id: 'linkedIn',
+      title: 'LinkedIn Accounts',
       type: 'item',
-      url: '/dashboard/lead',
-      icon: icons.IconAntennaBars5,
+      url: '/linked-accounts',
+      icon: icons.LinkedInIcon,
+      breadcrumbs: false
+    },
+    {
+      id: 'lead',
+      title: 'Leads',
+      type: 'item',
+      url: '/lead',
+      icon: icons.AccountCircleIcon,
+      breadcrumbs: false
+    },
+    {
+      id: 'mynetwork',
+      title: 'My Network',
+      type: 'item',
+      url: '/my-network',
+      icon: icons.Diversity2Icon,
+      breadcrumbs: false
+    },
+    {
+      id: 'campaigns',
+      title: 'Campaigns',
+      type: 'item',
+      url: '/campaigns',
+      icon: icons.TelegramIcon,
+      breadcrumbs: false
+    },
+    {
+      id: 'unibox',
+      title: 'Unibox',
+      type: 'item',
+      url: '/unibox',
+      icon: icons.SmsIcon,
       breadcrumbs: false
     }
   ]
